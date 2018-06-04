@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    Layout = null;
+}
+@if (Request.IsAuthenticated)
+{
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <li class="nav-item dropdown d-none d-xl-inline-block">
+            <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
+                <span class="profile-text">Hello, Richard V.Welsh !</span>
+                <img class="img-xs rounded-circle" src="images/faces/face1.jpg" alt="Profile image">
+            </a>
+            <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
+                <a class="dropdown-item mt-2" href="@Url.Action("Manage", "Accounts")">
+                    Manage Accounts
+                </a>
+                <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                    Log off
+                </a>
+            </div>
+        </li>
+    }
+}
+else
+{
+
+    <ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
+        <li class="nav-item">
+            <a href="@Url.Action("Register", "Account")" class="nav-link">
+                Register
+            </a>
+        </li>
+        <li class="nav-item">
+            <a href="@Url.Action("Login", "Account")" class="nav-link" style="width: 85px;">
+                Log In
+            </a>
+        </li>
+    </ul>
+
+    @*<ul class="navbar-nav navbar-nav-left header-links d-none d-md-flex">
+            <li class="nav-item">
+                <a class="nav-link">
+                    @Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link">
+                    @Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+                </a>
+            </li>
+        </ul>*@
+}
