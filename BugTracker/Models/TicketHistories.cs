@@ -7,15 +7,15 @@ namespace BugTracker.Models
 {
     public class TicketHistories
     {
-        public int id { get; set; }
-        public int ticketId { get; set; }
+        public int Id { get; set; }
+        public int TicketId { get; set; }
         public string property { get; set; }
         public string oldValue { get; set; }
         public string newValue { get; set; }
         public DateTimeOffset? changed { get; set; }
-        public string userId { get; set; }
+        public string UserId { get; set; }
 
-        public virtual Tickets ticket { get; set; }
-        public virtual ApplicationUser user { get; set; }
+        public virtual Tickets Ticket { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

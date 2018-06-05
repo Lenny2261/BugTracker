@@ -1,9 +1,12 @@
 ﻿@using Microsoft.AspNet.Identity
-@{
-                /**/
+@model BugTracker.Models.ApplicationUser
 
-                Layout = null;
+@{
+    /**/
+
+    Layout = null;
 }
+
 @if (Request.IsAuthenticated)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
@@ -13,10 +16,10 @@
         <li class="dropdown">
             <a href="#" data-toggle="dropdown" class="nav-link dropdown-toggle nav-link-lg">
                 <i class="ion ion-android-person d-lg-none"></i>
-                <div class="d-sm-none d-lg-inline-block">Hi, Ujang Maman</div>
+                <div class="d-sm-none d-lg-inline-block">Hi, @Model.firstName @Model.lastName</div>
             </a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a href="@Url.Action("Manage", "Accounts")" class="dropdown-item has-icon">
+                <a href="@Url.Action("Index", "Manage")" class="dropdown-item has-icon">
                     <i class="ion ion-android-person"></i> Profile
                 </a>
                 <a href="javascript:document.getElementById('logoutForm').submit()" class="dropdown-item has-icon">

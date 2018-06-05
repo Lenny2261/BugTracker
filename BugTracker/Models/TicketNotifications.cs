@@ -7,12 +7,12 @@ namespace BugTracker.Models
 {
     public class TicketNotifications
     {
-        public int id { get; set; }
-        public int ticketId { get; set; }
-        public string userId { get; set; }
+        public int Id { get; set; }
+        public int TicketId { get; set; }
+        public string UserId { get; set; }
         public bool seen { get; set; }
 
-        public virtual Tickets ticket { get; set; }
-        public virtual ApplicationUser user { get; set; }
+        public virtual Tickets Ticket { get; set; }
+        public virtual ApplicationUser User { get; set; }
     }
 }

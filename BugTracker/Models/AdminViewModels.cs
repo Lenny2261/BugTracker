@@ -7,7 +7,7 @@ namespace BugTracker.Models
 {
     public class RolesViewModels
     {
-        public ICollection<ApplicationUser> user;
+        //public ICollection<ApplicationUser> user;
         //public ICollection<ApplicationUserManager>
     }
 }

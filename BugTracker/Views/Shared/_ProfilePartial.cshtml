@@ -1,0 +1,17 @@
+﻿@model BugTracker.Models.ApplicationUser
+    @{
+        Layout = null;
+    }
+
+    <div class="sidebar-user">
+        <div class="sidebar-user-picture">
+            <img alt="image" src="@Model.avatar">
+        </div>
+        <div class="sidebar-user-details">
+            <div class="user-name">@Model.firstName @Model.lastName</div>
+            <div class="user-role">
+                @Model.Roles.FirstOrDefault()
+            </div>
+        </div>
+    </div>
+

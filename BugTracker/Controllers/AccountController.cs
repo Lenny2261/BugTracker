@@ -114,6 +114,20 @@ namespace BugTracker.Controllers
             }
         }
 
+        public ActionResult _ProfilePartial()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var id = User.Identity.GetUserId();
+                ApplicationUser model = db.Users.Where(u => u.Id == id).FirstOrDefault();
+                return View(model);
+            }
+            else
+            {
+                return View();
+            }
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -424,6 +438,27 @@ namespace BugTracker.Controllers
         public ActionResult ExternalLoginFailure()
         {
             return View();
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoAdmin()
+        {
+            var returnUrl = "";
+
+            var result = await SignInManager.PasswordSignInAsync("jmahoney2261@mailinator.com", "penguins82", false, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View();
+            }
         }
 
         protected override void Dispose(bool disposing)

@@ -7,17 +7,17 @@ namespace BugTracker.Models
 {
     public class Tickets
     {
-        public int id { get; set; }
+        public int Id { get; set; }
         public string title { get; set; }
         public string description { get; set; }
         public DateTimeOffset created { get; set; }
         public DateTimeOffset? updated { get; set; }
-        public int projectID { get; set; }
-        public int ticketTypeId { get; set; }
-        public int ticketStatusId { get; set; }
-        public int ticketPriorityId { get; set; }
-        public string assignedId { get; set; }
-        public string ownerId { get; set; }
+        public int ProjectID { get; set; }
+        public int TicketTypeId { get; set; }
+        public int TicketStatusId { get; set; }
+        public int TicketPriorityId { get; set; }
+        public string AssignedId { get; set; }
+        public string OwnerId { get; set; }
 
         public virtual ICollection<TicketAttachments> ticketAttachments { get; set; }
         public virtual ICollection<TicketComments> ticketComments { get; set; }
@@ -32,11 +32,11 @@ namespace BugTracker.Models
             this.ticketNotifications = new HashSet<TicketNotifications>();
         }
 
-        public virtual Projects project { get; set; }
-        public virtual TicketTypes ticketType { get; set; }
-        public virtual TicketStatuses ticketStatus { get; set; }
-        public virtual TicketPriorities ticketPriority { get; set; }
-        public virtual ApplicationUser assigned { get; set; }
-        public virtual ApplicationUser owner { get; set; }
+        public virtual Projects Project { get; set; }
+        public virtual TicketTypes TicketType { get; set; }
+        public virtual TicketStatuses TicketStatus { get; set; }
+        public virtual TicketPriorities TicketPriority { get; set; }
+        public virtual ApplicationUser Assigned { get; set; }
+        public virtual ApplicationUser Owner { get; set; }
     }
 }
