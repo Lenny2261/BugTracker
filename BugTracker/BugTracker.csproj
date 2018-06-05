@@ -3646,6 +3646,7 @@
     <Content Include="Views\Account\ChangeRoles.cshtml" />
     <Content Include="Views\Account\EditRoles.cshtml" />
     <Content Include="Views\Projects\ManageUsers.cshtml" />
+    <Content Include="Views\Projects\AssignUsers.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

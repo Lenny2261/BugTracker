@@ -21,12 +21,9 @@ namespace BugTracker.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-            var model = new ProjectDetailsViewModel
-            {
-                projects = db.projects.ToList(),
-                user = db.Users.Where(u => u.Id == userId).FirstOrDefault()
-            };
+            //var users = db.projects.SelectMany(p => p.projectUsers).Where(p => p.Id == userId);
 
+            var model = db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(userId));
             return View(model);
         }
 
@@ -145,7 +142,9 @@ namespace BugTracker.Controllers
         public ActionResult AssignUsers()
         {
 
-            var model = db.Users.ToList();
+            var model = db.Users.Where(u => u.Id == User.Identity.GetUserId()).FirstOrDefault();
+
+            ViewBag.Projects = db.projects.Where(p => p.projectUsers.FirstOrDefault().Id != model.Id).ToList();
 
             return View(model);
         }
