@@ -9,5 +9,12 @@ namespace BugTracker.Models
     {
         public int id { get; set; }
         public string name { get; set; }
+
+        public ICollection<Tickets> tickets;
+
+        public TicketStatuses()
+        {
+            this.tickets = new HashSet<Tickets>();
+        }
     }
 }

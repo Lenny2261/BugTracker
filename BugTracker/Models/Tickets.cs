@@ -19,6 +19,19 @@ namespace BugTracker.Models
         public string assignedId { get; set; }
         public string ownerId { get; set; }
 
+        public virtual ICollection<TicketAttachments> ticketAttachments { get; set; }
+        public virtual ICollection<TicketComments> ticketComments { get; set; }
+        public virtual ICollection<TicketHistories> ticketHistories { get; set; }
+        public virtual ICollection<TicketNotifications> ticketNotifications { get; set; }
+
+        public Tickets()
+        {
+            this.ticketAttachments = new HashSet<TicketAttachments>();
+            this.ticketComments = new HashSet<TicketComments>();
+            this.ticketHistories = new HashSet<TicketHistories>();
+            this.ticketNotifications = new HashSet<TicketNotifications>();
+        }
+
         public virtual Projects project { get; set; }
         public virtual TicketTypes ticketType { get; set; }
         public virtual TicketStatuses ticketStatus { get; set; }

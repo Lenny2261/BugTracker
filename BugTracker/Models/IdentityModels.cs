@@ -11,6 +11,7 @@ namespace BugTracker.Models
     {
         public string firstName { get; set; }
         public string lastName { get; set; }
+        public string avatar { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
@@ -44,5 +45,6 @@ namespace BugTracker.Models
         public DbSet<TicketStatuses> ticketStatuses { get; set; }
         public DbSet<TicketTypes> ticketTypes { get; set; }
 
+        public System.Data.Entity.DbSet<BugTracker.Models.ApplicationUser> ApplicationUsers { get; set; }
     }
 }

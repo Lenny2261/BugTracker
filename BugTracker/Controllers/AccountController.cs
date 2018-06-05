@@ -53,6 +53,13 @@ namespace BugTracker.Controllers
             }
         }
 
+        public ActionResult ChangeRoles()
+        {
+            var model = db.Users.Where(u => u.Roles != null);
+
+            return View(model.ToList());
+        }
+
         //
         // GET: /Account/Login
         [AllowAnonymous]

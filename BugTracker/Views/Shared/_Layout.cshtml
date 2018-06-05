@@ -6,201 +6,209 @@
     <title>@ViewBag.Title - My ASP.NET Application</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-    <link rel="stylesheet" href="~/vendors/iconfonts/mdi/css/materialdesignicons.min.css">
-    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.base.css">
-    <link rel="stylesheet" href="~/vendors/css/vendor.bundle.addons.css">
-    <link rel="stylesheet" href="~/css/style.css">
+    <link rel="stylesheet" href="~/dist/modules/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/dist/modules/ionicons/css/ionicons.min.css">
+    <link rel="stylesheet" href="~/dist/modules/fontawesome/web-fonts-with-css/css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="~/dist/modules/summernote/summernote-lite.css">
+    <link rel="stylesheet" href="~/dist/modules/flag-icon-css/css/flag-icon.min.css">
+    <link rel="stylesheet" href="~/dist/css/demo.css">
+    <link rel="stylesheet" href="~/dist/css/style.css">
 </head>
 <body>
-    <div class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
-        <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-                <h3>Bug Tracking System</h3>
-        </div>
-        <div class="navbar-menu-wrapper d-flex align-items-center">
-            <ul class="navbar-nav navbar-nav-right">
-                <li class="nav-item dropdown">
-                    <a class="nav-link count-indicator dropdown-toggle" id="notificationDropdown" href="#" data-toggle="dropdown">
-                        <i class="mdi mdi-bell"></i>
-                        <span class="count">4</span>
-                    </a>
-                    <div class="dropdown-menu dropdown-menu-right navbar-dropdown preview-list" aria-labelledby="notificationDropdown">
-                        <a class="dropdown-item">
-                            <p class="mb-0 font-weight-normal float-left">
-                                You have 4 new notifications
-                            </p>
-                            <span class="badge badge-pill badge-warning float-right">View all</span>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-success">
-                                    <i class="mdi mdi-alert-circle-outline mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-medium text-dark">Application Error</h6>
-                                <p class="font-weight-light small-text">
-                                    Just now
-                                </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-warning">
-                                    <i class="mdi mdi-comment-text-outline mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-medium text-dark">Settings</h6>
-                                <p class="font-weight-light small-text">
-                                    Private message
-                                </p>
-                            </div>
-                        </a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item preview-item">
-                            <div class="preview-thumbnail">
-                                <div class="preview-icon bg-info">
-                                    <i class="mdi mdi-email-outline mx-0"></i>
-                                </div>
-                            </div>
-                            <div class="preview-item-content">
-                                <h6 class="preview-subject font-weight-medium text-dark">New user registration</h6>
-                                <p class="font-weight-light small-text">
-                                    2 days ago
-                                </p>
-                            </div>
-                        </a>
-                    </div>
-                </li>
-                @Html.Action("_LoginPartial", "Account")
-            </ul>
-            <button class="navbar-toggler navbar-toggler-right d-lg-none align-self-center" type="button" data-toggle="offcanvas">
-                <span class="icon-menu"></span>
-            </button>
-        </div>
-    </div>
-    @*<div class="container body-content">*@
+    <div id="app">
+        <div class="main-wrapper">
 
-    <div class="container-fluid page-body-wrapper">
-        <nav class="sidebar sidebar-offcanvas" id="sidebar">
-            <ul class="nav">
-                <li class="nav-item nav-profile">
-                    <div class="nav-link">
-                        <div class="user-wrapper">
-                            <div class="profile-image">
-                                <img src="images/faces/face1.jpg" alt="profile image">
-                            </div>
-                            <div class="text-wrapper">
-                                <p class="profile-name">Richard V.Welsh</p>
-                                <div>
-                                    <small class="designation text-muted">Manager</small>
-                                    <span class="status-indicator online"></span>
+
+            @*Nav Bar*@
+            <div class="navbar-bg"></div>
+            <nav class="navbar navbar-expand-lg main-navbar">
+                <form class="form-inline mr-auto">
+                    <ul class="navbar-nav mr-3">
+                        <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
+                        <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="ion ion-search"></i></a></li>
+                    </ul>
+                    <div class="search-element">
+                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                        <button class="btn" type="submit"><i class="ion ion-search"></i></button>
+                    </div>
+                </form>
+                <ul class="navbar-nav navbar-right">
+                    <li class="dropdown dropdown-list-toggle">
+                        <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="ion ion-ios-bell-outline"></i></a>
+                        <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                            <div class="dropdown-header">
+                                Notifications
+                                <div class="float-right">
+                                    <a href="#">View All</a>
                                 </div>
+                            </div>
+                            <div class="dropdown-list-content">
+
                             </div>
                         </div>
-                        <button class="btn btn-success btn-block">
-                            New Project
-                            <i class="mdi mdi-plus"></i>
-                        </button>
+                    </li>
+                    @Html.Action("_LoginPartial", "Account")
+                </ul>
+            </nav>
+            @*Side Bar*@
+            <div class="main-sidebar">
+                <aside id="sidebar-wrapper">
+                    <div class="sidebar-brand">
+                        <a href="@Url.Action("Index", "Home")">Stisla Lite</a>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index.html">
-                        <i class="menu-icon mdi mdi-television"></i>
-                        <span class="menu-title">Dashboard</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#ui-basic" aria-expanded="false" aria-controls="ui-basic">
-                        <i class="menu-icon mdi mdi-content-copy"></i>
-                        <span class="menu-title">Basic UI Elements</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="ui-basic">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/ui-features/buttons.html">Buttons</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/ui-features/typography.html">Typography</a>
-                            </li>
-                        </ul>
+                    <div class="sidebar-user">
+                        <div class="sidebar-user-picture">
+                            <img alt="image" src="../dist/img/avatar/avatar-1.jpeg">
+                        </div>
+                        <div class="sidebar-user-details">
+                            <div class="user-name">Ujang Maman</div>
+                            <div class="user-role">
+                                Administrator
+                            </div>
+                        </div>
                     </div>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/forms/basic_elements.html">
-                        <i class="menu-icon mdi mdi-backup-restore"></i>
-                        <span class="menu-title">Form elements</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/charts/chartjs.html">
-                        <i class="menu-icon mdi mdi-chart-line"></i>
-                        <span class="menu-title">Charts</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/tables/basic-table.html">
-                        <i class="menu-icon mdi mdi-table"></i>
-                        <span class="menu-title">Tables</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="pages/icons/font-awesome.html">
-                        <i class="menu-icon mdi mdi-sticker"></i>
-                        <span class="menu-title">Icons</span>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" data-toggle="collapse" href="#auth" aria-expanded="false" aria-controls="auth">
-                        <i class="menu-icon mdi mdi-restart"></i>
-                        <span class="menu-title">User Pages</span>
-                        <i class="menu-arrow"></i>
-                    </a>
-                    <div class="collapse" id="auth">
-                        <ul class="nav flex-column sub-menu">
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/samples/blank-page.html"> Blank Page </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/samples/login.html"> Login </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/samples/register.html"> Register </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/samples/error-404.html"> 404 </a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="pages/samples/error-500.html"> 500 </a>
-                            </li>
-                        </ul>
+                    <ul class="sidebar-menu">
+                        <li class="menu-header">Dashboard</li>
+                        <li class="active">
+                            <a href=""><i class="ion ion-speedometer"></i><span>Dashboard</span></a>
+                        </li>
+                        <li class="menu-header">Components</li>
+                        <li>
+                            <a href="#" class="has-dropdown"><i class="ion ion-ios-albums-outline"></i><span>Components</span></a>
+                            <ul class="menu-dropdown">
+                                <li><a href="general.html"><i class="ion ion-ios-circle-outline"></i> Basic</a></li>
+                                <li><a href="components.html"><i class="ion ion-ios-circle-outline"></i> Main Components</a></li>
+                                <li><a href="buttons.html"><i class="ion ion-ios-circle-outline"></i> Buttons</a></li>
+                                <li><a href="toastr.html"><i class="ion ion-ios-circle-outline"></i> Toastr</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#" class="has-dropdown"><i class="ion ion-flag"></i><span>Icons</span></a>
+                            <ul class="menu-dropdown">
+                                <li><a href="ion-icons.html"><i class="ion ion-ios-circle-outline"></i> Ion Icons</a></li>
+                                <li><a href="fontawesome.html"><i class="ion ion-ios-circle-outline"></i> Font Awesome</a></li>
+                                <li><a href="flag.html"><i class="ion ion-ios-circle-outline"></i> Flag</a></li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="table.html"><i class="ion ion-clipboard"></i><span>Tables</span></a>
+                        </li>
+                        <li>
+                            <a href="chartjs.html"><i class="ion ion-stats-bars"></i><span>Chart.js</span></a>
+                        </li>
+                        <li>
+                            <a href="simple.html"><i class="ion ion-ios-location-outline"></i><span>Google Maps</span></a>
+                        </li>
+                        <li>
+                            <a href="#" class="has-dropdown"><i class="ion ion-ios-copy-outline"></i><span>Examples</span></a>
+                            <ul class="menu-dropdown">
+                                <li><a href="login.html"><i class="ion ion-ios-circle-outline"></i> Login</a></li>
+                                <li><a href="register.html"><i class="ion ion-ios-circle-outline"></i> Register</a></li>
+                                <li><a href="forgot.html"><i class="ion ion-ios-circle-outline"></i> Forgot Password</a></li>
+                                <li><a href="reset.html"><i class="ion ion-ios-circle-outline"></i> Reset Password</a></li>
+                                <li><a href="404.html"><i class="ion ion-ios-circle-outline"></i> 404</a></li>
+                            </ul>
+                        </li>
+                        <li class="menu-header">More</li>
+                        <li>
+                            <a href="#" class="has-dropdown"><i class="ion ion-ios-nutrition"></i> Click Me</a>
+                            <ul class="menu-dropdown">
+                                <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Menu 1</a></li>
+                                <li>
+                                    <a href="#" class="has-dropdown"><i class="ion ion-ios-circle-outline"></i> Menu 2</a>
+                                    <ul class="menu-dropdown">
+                                        <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 1</a></li>
+                                        <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 2</a></li>
+                                        <li>
+                                            <a href="#" class="has-dropdown"><i class="ion ion-ios-circle-outline"></i> Child Menu 3</a>
+                                            <ul class="menu-dropdown">
+                                                <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 1</a></li>
+                                                <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 2</a></li>
+                                                <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 3</a></li>
+                                            </ul>
+                                        </li>
+                                        <li><a href="#"><i class="ion ion-ios-circle-outline"></i> Child Menu 4</a></li>
+                                    </ul>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a href="#"><i class="ion ion-heart"></i> Badges <div class="badge badge-primary">10</div></a>
+                        </li>
+                        <li>
+                            <a href="credits.html"><i class="ion ion-ios-information-outline"></i> Credits</a>
+                        </li>
+                    </ul>
+                    <div class="p-3 mt-4 mb-4">
+                        <a href="http://stisla.multinity.com/" class="btn btn-danger btn-shadow btn-round has-icon has-icon-nofloat btn-block">
+                            <i class="ion ion-help-buoy"></i> <div>Go PRO!</div>
+                        </a>
                     </div>
-                </li>
-            </ul>
-        </nav>
-
-        @RenderBody()
-    </div>
-        <footer class="footer">
-            <div class="container-fluid clearfix">
-                <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">
-                    Copyright © 2018 John Mahoney
-                </span>
+                </aside>
             </div>
-        </footer>
-        @*</div>*@
+            <div class="main-content">
+                @RenderBody()
+            </div>
+            <footer class="footer">
+                <div class="container-fluid clearfix">
+                    <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">
+                        Copyright © 2018 John Mahoney
+                    </span>
+                </div>
+            </footer>
+        </div>
+    </div>
 
 
-        <script src="~/vendors/js/vendor.bundle.base.js"></script>
-        <script src="~/vendors/js/vendor.bundle.addons.js"></script>
-        <script src="~/js/off-canvas.js"></script>
-        <script src="~/js/misc.js"></script>
-        <script src="~/js/chart.js"></script>
-        @Scripts.Render("~/bundles/jquery")
-        @Scripts.Render("~/bundles/bootstrap")
-        @RenderSection("scripts", required: false)
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <script src="~/dist/modules/popper.js"></script>
+    <script src="~/dist/modules/tooltip.js"></script>
+    <script src="~/dist/modules/nicescroll/jquery.nicescroll.min.js"></script>
+    <script src="~/dist/modules/scroll-up-bar/dist/scroll-up-bar.min.js"></script>
+    <script src="~/dist/js/sa-functions.js"></script>
+    <script src="~/dist/modules/chart.min.js"></script>
+    <script src="~/dist/modules/summernote/summernote-lite.js"></script>
+    <script>
+        var ctx = document.getElementById("myChart").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
+                datasets: [{
+                    label: 'Statistics',
+                    data: [460, 458, 330, 502, 430, 610, 488],
+                    borderWidth: 2,
+                    backgroundColor: 'rgb(87,75,144)',
+                    borderColor: 'rgb(87,75,144)',
+                    borderWidth: 2.5,
+                    pointBackgroundColor: '#ffffff',
+                    pointRadius: 4
+                }]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true,
+                            stepSize: 150
+                        }
+                    }],
+                    xAxes: [{
+                        gridLines: {
+                            display: false
+                        }
+                    }]
+                },
+            }
+        });
+    </script>
+    <script src="~/dist/js/scripts.js"></script>
+    <script src="~/dist/js/custom.js"></script>
+    <script src="~/dist/js/demo.js"></script>
+    @RenderSection("scripts", required: false)
 </body>
 </html>
