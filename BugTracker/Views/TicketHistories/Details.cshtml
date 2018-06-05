@@ -1,0 +1,66 @@
+﻿@model BugTracker.Models.TicketHistories
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>TicketHistories</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Ticket.title)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Ticket.title)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.User.firstName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.User.firstName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.property)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.property)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.oldValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.oldValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.newValue)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.newValue)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.changed)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.changed)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

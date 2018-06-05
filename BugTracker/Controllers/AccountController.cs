@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
+using System.Collections;
+using System.Data.Entity;
+using System.Web.Security;
 
 namespace BugTracker.Controllers
 {
@@ -53,11 +56,57 @@ namespace BugTracker.Controllers
             }
         }
 
+        [Authorize(Roles = "Admin")]
         public ActionResult ChangeRoles()
         {
-            var model = db.Users.Where(u => u.Roles != null);
+            IEnumerable model = db.Users;
 
-            return View(model.ToList());
+            return View(model);
+        }
+
+
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditRoles(string userId)
+        {
+            ApplicationUser user = db.Users.Where(u => u.Id == userId).FirstOrDefault();
+            var currentRole = user.Roles.FirstOrDefault();
+
+            if(user == null)
+            {
+                return RedirectToAction("ChangeRoles");
+            }
+
+            if (currentRole == null)
+            {
+                ViewBag.Roles = new SelectList(db.Roles, "Id", "Name");
+                return View(user);
+            }
+
+            ViewBag.Roles = new SelectList(db.Roles, "Id", "Name", currentRole.RoleId);
+            return View(user);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin")]
+        public ActionResult EditRoles(FormCollection form, [Bind(Include = "Id")] string userId)
+        {
+            string roleId = form["Roles"].ToString();
+
+            ApplicationUser user = db.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            if(user.Roles.FirstOrDefault() != null)
+            {
+                var currentRoleID = user.Roles.FirstOrDefault().RoleId;
+                var currentrole = db.Roles.Where(r => r.Id == currentRoleID).FirstOrDefault();
+
+                UserManager.RemoveFromRole(userId, currentrole.Name);
+            }
+
+            var newRole = db.Roles.Where(r => r.Id == roleId).FirstOrDefault();
+
+            UserManager.AddToRole(userId, newRole.Name);
+
+            return RedirectToAction("ChangeRoles");
         }
 
         //
@@ -188,7 +237,7 @@ namespace BugTracker.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                var user = new ApplicationUser { UserName = model.Email, Email = model.Email, firstName = model.FirstName, lastName = model.LastName, avatar = "/Avatar/default-avatar.png" };
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {

@@ -1,0 +1,17 @@
+﻿@model IEnumerable<BugTracker.Models.ApplicationUser>
+
+@foreach (var item in Model)
+{
+    <tr>
+        <td>
+            @item.firstName
+        </td>
+        <td>
+            @item.lastName
+        </td>
+        <td>
+            Change Role: @Html.ActionLink("Edit", "EditRoles", new { userId = item.Id })
+        </td>
+    </tr>
+    <hr />
+}

@@ -7,147 +7,112 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
-using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
-    public class ProjectsController : Controller
+    public class TicketPrioritiesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        // GET: TicketPriorities
         public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
-
-            var model = new ProjectDetailsViewModel
-            {
-                projects = db.projects.ToList(),
-                user = db.Users.Where(u => u.Id == userId).FirstOrDefault()
-            };
-
-            return View(model);
+            return View(db.ticketPriorities.ToList());
         }
 
-        // GET: Projects/Details/5
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        // GET: TicketPriorities/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketPriorities ticketPriorities = db.ticketPriorities.Find(id);
+            if (ticketPriorities == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(ticketPriorities);
         }
 
-        // GET: Projects/Create
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketPriorities/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: TicketPriorities/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,name,description")] Projects projects)
+        public ActionResult Create([Bind(Include = "Id,name")] TicketPriorities ticketPriorities)
         {
             if (ModelState.IsValid)
             {
-                db.projects.Add(projects);
+                db.ticketPriorities.Add(ticketPriorities);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(projects);
+            return View(ticketPriorities);
         }
 
-        // GET: Projects/Edit/5
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketPriorities/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketPriorities ticketPriorities = db.ticketPriorities.Find(id);
+            if (ticketPriorities == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(ticketPriorities);
         }
 
-        // POST: Projects/Edit/5
+        // POST: TicketPriorities/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,name,description")] Projects projects)
+        public ActionResult Edit([Bind(Include = "Id,name")] TicketPriorities ticketPriorities)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(projects).State = EntityState.Modified;
+                db.Entry(ticketPriorities).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(projects);
+            return View(ticketPriorities);
         }
 
-        // GET: Projects/Delete/5
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketPriorities/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketPriorities ticketPriorities = db.ticketPriorities.Find(id);
+            if (ticketPriorities == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(ticketPriorities);
         }
 
-        // POST: Projects/Delete/5
+        // POST: TicketPriorities/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Projects projects = db.projects.Find(id);
-            db.projects.Remove(projects);
+            TicketPriorities ticketPriorities = db.ticketPriorities.Find(id);
+            db.ticketPriorities.Remove(ticketPriorities);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult ManageUsers()
-        {
-
-            var model = db.Users.ToList();
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignUsers()
-        {
-
-            var model = db.Users.ToList();
-
-            return View(model);
         }
 
         protected override void Dispose(bool disposing)

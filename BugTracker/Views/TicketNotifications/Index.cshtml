@@ -1,31 +1,38 @@
-﻿@model BugTracker.Models.ProjectDetailsViewModel
+﻿@model IEnumerable<BugTracker.Models.TicketNotifications>
 
 @{
     ViewBag.Title = "Index";
 }
 
 <h2>Index</h2>
+
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.projects.FirstOrDefault().name)
+            @Html.DisplayNameFor(model => model.Ticket.title)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.projects.FirstOrDefault().description)
+            @Html.DisplayNameFor(model => model.User.firstName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.seen)
         </th>
         <th></th>
     </tr>
 
-@foreach (var item in Model.projects.Where(p => p.projectUsers.FirstOrDefault().Id == Model.user.Id)) {
+@foreach (var item in Model) {
     <tr>
         <td>
-            @Html.DisplayFor(modelItem => item.name)
+            @Html.DisplayFor(modelItem => item.Ticket.title)
         </td>
         <td>
-            @Html.DisplayFor(modelItem => item.description)
+            @Html.DisplayFor(modelItem => item.User.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.seen)
         </td>
         <td>
             @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |

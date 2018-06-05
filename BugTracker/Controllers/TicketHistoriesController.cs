@@ -7,147 +7,121 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
-using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
-    public class ProjectsController : Controller
+    public class TicketHistoriesController : Controller
     {
         private ApplicationDbContext db = new ApplicationDbContext();
 
-        // GET: Projects
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        // GET: TicketHistories
         public ActionResult Index()
         {
-            var userId = User.Identity.GetUserId();
-
-            var model = new ProjectDetailsViewModel
-            {
-                projects = db.projects.ToList(),
-                user = db.Users.Where(u => u.Id == userId).FirstOrDefault()
-            };
-
-            return View(model);
+            var ticketHistories = db.ticketHistories.Include(t => t.Ticket).Include(t => t.User);
+            return View(ticketHistories.ToList());
         }
 
-        // GET: Projects/Details/5
-        [Authorize(Roles = "Admin, ProjectManager, Developer, Submitter")]
+        // GET: TicketHistories/Details/5
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketHistories ticketHistories = db.ticketHistories.Find(id);
+            if (ticketHistories == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(ticketHistories);
         }
 
-        // GET: Projects/Create
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketHistories/Create
         public ActionResult Create()
         {
+            ViewBag.TicketId = new SelectList(db.tickets, "Id", "title");
+            ViewBag.UserId = new SelectList(db.Users, "Id", "firstName");
             return View();
         }
 
-        // POST: Projects/Create
+        // POST: TicketHistories/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,name,description")] Projects projects)
+        public ActionResult Create([Bind(Include = "Id,TicketId,property,oldValue,newValue,changed,UserId")] TicketHistories ticketHistories)
         {
             if (ModelState.IsValid)
             {
-                db.projects.Add(projects);
+                db.ticketHistories.Add(ticketHistories);
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
-            return View(projects);
+            ViewBag.TicketId = new SelectList(db.tickets, "Id", "title", ticketHistories.TicketId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "firstName", ticketHistories.UserId);
+            return View(ticketHistories);
         }
 
-        // GET: Projects/Edit/5
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketHistories/Edit/5
         public ActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketHistories ticketHistories = db.ticketHistories.Find(id);
+            if (ticketHistories == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            ViewBag.TicketId = new SelectList(db.tickets, "Id", "title", ticketHistories.TicketId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "firstName", ticketHistories.UserId);
+            return View(ticketHistories);
         }
 
-        // POST: Projects/Edit/5
+        // POST: TicketHistories/Edit/5
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,name,description")] Projects projects)
+        public ActionResult Edit([Bind(Include = "Id,TicketId,property,oldValue,newValue,changed,UserId")] TicketHistories ticketHistories)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(projects).State = EntityState.Modified;
+                db.Entry(ticketHistories).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
-            return View(projects);
+            ViewBag.TicketId = new SelectList(db.tickets, "Id", "title", ticketHistories.TicketId);
+            ViewBag.UserId = new SelectList(db.Users, "Id", "firstName", ticketHistories.UserId);
+            return View(ticketHistories);
         }
 
-        // GET: Projects/Delete/5
-        [Authorize(Roles = "Admin, ProjectManager")]
+        // GET: TicketHistories/Delete/5
         public ActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Projects projects = db.projects.Find(id);
-            if (projects == null)
+            TicketHistories ticketHistories = db.ticketHistories.Find(id);
+            if (ticketHistories == null)
             {
                 return HttpNotFound();
             }
-            return View(projects);
+            return View(ticketHistories);
         }
 
-        // POST: Projects/Delete/5
+        // POST: TicketHistories/Delete/5
         [HttpPost, ActionName("Delete")]
-        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Projects projects = db.projects.Find(id);
-            db.projects.Remove(projects);
+            TicketHistories ticketHistories = db.ticketHistories.Find(id);
+            db.ticketHistories.Remove(ticketHistories);
             db.SaveChanges();
             return RedirectToAction("Index");
-        }
-
-        [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult ManageUsers()
-        {
-
-            var model = db.Users.ToList();
-
-            return View(model);
-        }
-
-        [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignUsers()
-        {
-
-            var model = db.Users.ToList();
-
-            return View(model);
         }
 
         protected override void Dispose(bool disposing)
