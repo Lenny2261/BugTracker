@@ -3,6 +3,7 @@
 
 @{
     var roleHelper = new RoleHelper();
+    var projectHelper = new ProjectHelper();
 }
 
 @foreach (var item in Model)
@@ -14,11 +15,29 @@
         <td>
             @item.lastName
         </td>
+        <td>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Projects: </b>
+            @{ 
+                var projectStr = "";
+            }
+            @foreach (var projects in projectHelper.ListUserProjects(item.Id))
+            {
+                projectStr = projectStr + @projects.name + ", ";
+
+            }
+            @{ 
+                if(projectStr != "")
+                {
+                    projectStr = projectStr.Substring(0, projectStr.Length - 2);
+                }
+            }
+            @projectStr
+        </td>
         <td style="padding-left: 10px; padding-right: 10px;">
-            <b> Role:</b> @roleHelper.ListUserRoles(item.Id).FirstOrDefault().ToString()
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b> Role:</b> @roleHelper.ListUserRoles(item.Id).FirstOrDefault().ToString()
         </td>
         <td style="padding-left: 10px;">
-            <b>Assign to Projects:</b> @Html.ActionLink("Assign", "AssignUsers", new { userId = item.Id })
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Assign to Projects:</b> @Html.ActionLink("Assign", "AssignUsers", new { userId = item.Id })
         </td>
     </tr>
     <hr />

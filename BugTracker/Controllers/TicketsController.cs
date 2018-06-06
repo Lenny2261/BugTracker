@@ -144,9 +144,19 @@ namespace BugTracker.Controllers
 
         public ActionResult Personal()
         {
-            //var tickets = db.tickets.Where()
+            var userId = User.Identity.GetUserId();
+            var tickets = db.tickets.ToList();
 
-            return View();
+            if (User.IsInRole("ProjectManager") || User.IsInRole("Admin"))
+            {
+                tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList();
+            }
+            else if (User.IsInRole("Developer"))
+            {
+                                tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList();
+            }
+
+            return View(tickets);
         }
 
         // POST: Tickets/Delete/5

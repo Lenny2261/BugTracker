@@ -15,11 +15,11 @@
             @item.lastName
         </td>
         <td>
-            <b>Roles: </b>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Roles: </b>
             @roleHelper.ListUserRoles(item.Id).FirstOrDefault().ToString()
         </td>
         <td class="text-right">
-            <b>Change Role:</b> @Html.ActionLink("Edit", "EditRoles", new { userId = item.Id })
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<b>Change Role:</b> @Html.ActionLink("Edit", "EditRoles", new { userId = item.Id })
         </td>
     </tr>
     <hr />

@@ -21,9 +21,6 @@ namespace BugTracker.Controllers
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
-
-            //var users = db.projects.SelectMany(p => p.projectUsers).Where(p => p.Id == userId);
-
             var model = db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(userId));
             return View(model);
         }
@@ -174,7 +171,7 @@ namespace BugTracker.Controllers
             }
 
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("ManageUsers");
         }
 
         protected override void Dispose(bool disposing)
