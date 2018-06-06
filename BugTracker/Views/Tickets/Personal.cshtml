@@ -40,35 +40,38 @@
 
     @foreach (var item in Model)
     {
-        <tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.Assigned.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Owner.firstName)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Project.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketPriority.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketStatus.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.TicketType.name)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.title)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.description)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.created)
+        </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Assigned.firstName)
+                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) 
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Owner.firstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Project.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketPriority.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketStatus.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.TicketType.name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.created)
-            </td>
-        </tr>
+    </tr>
     }
 
 </table>

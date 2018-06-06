@@ -87,7 +87,11 @@
                                     @if (User.IsInRole("Developer") || User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
                                         <li><a href="@Url.Action("Index", "Projects")"><i class="ion ion-ios-circle-outline"></i> Your Projects</a></li>
-                                        <li><a href="@Url.Action("Personal", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Your Tickets</a></li>
+                                    }
+                                    <li><a href="@Url.Action("Personal", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Your Tickets</a></li>
+                                    @if (User.IsInRole("Developer"))
+                                    {
+                                        <li><a href="@Url.Action("DevProjectTickets", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Your Projects Tickets</a></li>
                                     }
                                     <li><a href="@Url.Action("Index", "Tickets")"><i class="ion ion-ios-circle-outline"></i> All Tickets</a></li>
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))

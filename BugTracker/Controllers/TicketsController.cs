@@ -20,7 +20,7 @@ namespace BugTracker.Controllers
         public ActionResult Index()
         {
             var tickets = db.tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
-            return View(tickets.ToList());
+            return View(tickets.OrderBy(t => t.ProjectID).ToList());
         }
 
         // GET: Tickets/Details/5
@@ -82,7 +82,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Edit/5
-        [Authorize(Roles = "Admin,ProjectManager,Developer")]
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -107,15 +107,35 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Admin,ProjectManager,Developer")]
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,title,description,created,updated,ProjectID,TicketTypeId,TicketStatusId,TicketPriorityId,AssignedId,OwnerId")] Tickets tickets)
+        public ActionResult Edit([Bind(Include = "Id,title,description,created,updated,ProjectID,TicketTypeId,TicketStatusId,TicketPriorityId,AssignedId")] Tickets tickets)
         {
             if (ModelState.IsValid)
             {
+
+                if (User.IsInRole("Developer"))
+                {
+                    tickets.title = (string)TempData["Title"];
+                    tickets.description = (string)TempData["Description"];
+                    tickets.AssignedId = (string)TempData["AssignedId"];
+                    tickets.TicketPriorityId = (int)TempData["TicketPriorityId"];
+                }
+                else if (User.IsInRole("Submitter"))
+                {
+                    tickets.TicketTypeId = (int)TempData["TicketTypeId"];
+                    tickets.TicketStatusId = (int)TempData["TicketStatusId"];
+                    tickets.AssignedId = (string)TempData["AssignedId"];
+                    tickets.TicketPriorityId = (int)TempData["TicketPriorityId"];
+                }
+
+                tickets.updated = DateTimeOffset.Now;
+                tickets.created = (DateTimeOffset)TempData["CreatedDate"];
+                tickets.ProjectID = (int)TempData["ProjectId"];
+                tickets.OwnerId = (string)TempData["OwnerId"];
                 db.Entry(tickets).State = EntityState.Modified;
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Personal");
             }
             ViewBag.AssignedId = new SelectList(db.Users, "Id", "firstName", tickets.AssignedId);
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "firstName", tickets.OwnerId);
@@ -142,6 +162,7 @@ namespace BugTracker.Controllers
             return View(tickets);
         }
 
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Personal()
         {
             var userId = User.Identity.GetUserId();
@@ -153,8 +174,21 @@ namespace BugTracker.Controllers
             }
             else if (User.IsInRole("Developer"))
             {
-                                tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList();
+                tickets = db.tickets.Where(t => t.AssignedId == userId).ToList();
             }
+            else if (User.IsInRole("Submitter"))
+            {
+                tickets = db.tickets.Where(t => t.OwnerId == userId).ToList();
+            }
+
+            return View(tickets.OrderBy(t => t.ProjectID));
+        }
+
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
+        public ActionResult DevProjectTickets()
+        {
+            var userId = User.Identity.GetUserId();
+            var tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList();
 
             return View(tickets);
         }

@@ -147,11 +147,12 @@ namespace BugTracker.Controllers
         public ActionResult AssignUsers(string userId)
         {
             var userIn = db.Users.Where(u => u.Id == userId).FirstOrDefault();
+            var projectsId = new List<int>();
 
             var model = new AssignProjects
             {
                 user = userIn,
-                projects = new MultiSelectList(db.projects.Where(p => p.projectUsers.FirstOrDefault().Id != userIn.Id), "Id", "name")
+                projects = new MultiSelectList(db.projects, "Id", "name", projectsId)
             };
 
             return View(model);
@@ -161,8 +162,19 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult AssignUsers(AssignProjects model, string userId)
         {
-
+            ProjectHelper projectHelp = new ProjectHelper();
             model.user = db.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            foreach(var project in projectHelp.ListUserProjects(userId))
+            {
+                Projects projectDel = db.projects.Find(project.Id);
+                projectDel.projectUsers.Remove(model.user);
+                db.Entry(projectDel).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
+            if (model.selectedProjects == null)
+                return RedirectToAction("ManageUsers");
 
             for(int index = 0; index < model.selectedProjects.Length; index++)
             {
