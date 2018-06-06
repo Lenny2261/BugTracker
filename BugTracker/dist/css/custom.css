@@ -3,3 +3,14 @@
     width: 200px;
     height: 200px;
 }
+
+#sortLinks{
+    text-decoration: none;
+    color: black;
+    font: bolder;
+}
+
+    #sortLinks:hover {
+        text-decoration: none;
+        color: #574B90;
+    }
