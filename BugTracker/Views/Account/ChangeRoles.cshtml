@@ -1,4 +1,9 @@
-﻿@model IEnumerable<BugTracker.Models.ApplicationUser>
+﻿@using BugTracker.Helpers
+@model IEnumerable<BugTracker.Models.ApplicationUser>
+
+@{ 
+    var roleHelper = new RoleHelper();
+}
 
 @foreach (var item in Model)
 {
@@ -9,8 +14,12 @@
         <td>
             @item.lastName
         </td>
+        <td>
+            <b>Roles: </b>
+            @roleHelper.ListUserRoles(item.Id).FirstOrDefault().ToString()
+        </td>
         <td class="text-right">
-            Change Role: @Html.ActionLink("Edit", "EditRoles", new { userId = item.Id })
+            <b>Change Role:</b> @Html.ActionLink("Edit", "EditRoles", new { userId = item.Id })
         </td>
     </tr>
     <hr />

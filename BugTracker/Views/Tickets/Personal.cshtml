@@ -1,0 +1,74 @@
+﻿@model IEnumerable<BugTracker.Models.Tickets>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Personal Tickets</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            Assigned Personel
+        </th>
+        <th>
+            Submitter of Ticket
+        </th>
+        <th>
+            Project
+        </th>
+        <th>
+            Priority
+        </th>
+        <th>
+            Status
+        </th>
+        <th>
+            Type of Ticket
+        </th>
+        <th>
+            Name
+        </th>
+        <th>
+            Description
+        </th>
+        <th>
+            Date Created
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Assigned.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Owner.firstName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Project.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketPriority.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketStatus.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.TicketType.name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.title)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.created)
+            </td>
+        </tr>
+    }
+
+</table>

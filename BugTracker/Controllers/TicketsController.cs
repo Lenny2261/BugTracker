@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -15,6 +16,7 @@ namespace BugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: Tickets
+        [Authorize(Roles = "Submitter,Admin,ProjectManager,Developer")]
         public ActionResult Index()
         {
             var tickets = db.tickets.Include(t => t.Assigned).Include(t => t.Owner).Include(t => t.Project).Include(t => t.TicketPriority).Include(t => t.TicketStatus).Include(t => t.TicketType);
@@ -22,6 +24,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
+        [Authorize(Roles = "Admin,ProjectManager,Developer")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
+        [Authorize(Roles = "Submitter,Admin,ProjectManager,Developer")]
         public ActionResult Create()
         {
             ViewBag.AssignedId = new SelectList(db.Users, "Id", "firstName");
@@ -52,11 +56,17 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Submitter,Admin,ProjectManager,Developer")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,title,description,created,updated,ProjectID,TicketTypeId,TicketStatusId,TicketPriorityId,AssignedId,OwnerId")] Tickets tickets)
         {
             if (ModelState.IsValid)
             {
+
+                tickets.OwnerId = User.Identity.GetUserId();
+                tickets.created = DateTimeOffset.Now;
+                tickets.TicketStatusId = 4;
+
                 db.tickets.Add(tickets);
                 db.SaveChanges();
                 return RedirectToAction("Index");
@@ -72,6 +82,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Edit/5
+        [Authorize(Roles = "Admin,ProjectManager,Developer")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -96,6 +107,7 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin,ProjectManager,Developer")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,title,description,created,updated,ProjectID,TicketTypeId,TicketStatusId,TicketPriorityId,AssignedId,OwnerId")] Tickets tickets)
         {
@@ -115,6 +127,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -129,8 +142,16 @@ namespace BugTracker.Controllers
             return View(tickets);
         }
 
+        public ActionResult Personal()
+        {
+            //var tickets = db.tickets.Where()
+
+            return View();
+        }
+
         // POST: Tickets/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

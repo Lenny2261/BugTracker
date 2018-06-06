@@ -7,6 +7,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
+using System.Data.Entity;
 
 namespace BugTracker.Controllers
 {
@@ -15,6 +16,7 @@ namespace BugTracker.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext db = new ApplicationDbContext();
 
         public ManageController()
         {
@@ -320,6 +322,37 @@ namespace BugTracker.Controllers
             }
             var result = await UserManager.AddLoginAsync(User.Identity.GetUserId(), loginInfo.Login);
             return result.Succeeded ? RedirectToAction("ManageLogins") : RedirectToAction("ManageLogins", new { Message = ManageMessageId.Error });
+        }
+
+        public ActionResult ChangeName()
+        {
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = db.Users.Find(userId);
+
+            var model = new EditName
+            {
+                firstName = user.firstName,
+                lastName = user.lastName
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ChangeName([Bind(Include = "firstName,lastName")]EditName model)
+        {
+            var userId = User.Identity.GetUserId();
+
+            ApplicationUser user = db.Users.Find(userId);
+
+            user.firstName = model.firstName;
+            user.lastName = model.lastName;
+
+            db.Entry(user).State = EntityState.Modified;
+            db.SaveChanges();
+
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

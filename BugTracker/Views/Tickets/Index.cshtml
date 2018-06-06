@@ -4,42 +4,36 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Tickets</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Assigned.firstName)
+            Assigned Personel
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Owner.firstName)
+            Submitter of Ticket
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Project.name)
+            Project
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketPriority.name)
+            Priority
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketStatus.name)
+            Status
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.TicketType.name)
+            Type of Ticket
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.title)
+            Name
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.description)
+            Description
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.created)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.updated)
+            Date Created
         </th>
         <th></th>
     </tr>
@@ -72,14 +66,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.created)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.updated)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-            @Html.ActionLink("Details", "Details", new { id=item.Id }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.Id })
         </td>
     </tr>
 }

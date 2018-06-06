@@ -82,25 +82,35 @@
                         @if (User.Identity.IsAuthenticated)
                         {
                             <li>
-                                <a href="#" class="has-dropdown"><i class="ion ion-ios-copy-outline"></i><span>Work</span></a>
+                                <a href="#" class="has-dropdown"><i class="ion ion-ios-copy-outline"></i><span>Ticket/Project Data</span></a>
                                 <ul class="menu-dropdown">
                                     @if (User.IsInRole("Developer") || User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        <li><a href="@Url.Action("Index", "Projects")"><i class="ion ion-ios-circle-outline"></i> Projects</a></li>
+                                        <li><a href="@Url.Action("Index", "Projects")"><i class="ion ion-ios-circle-outline"></i> Your Projects</a></li>
+                                        <li><a href="@Url.Action("Personal", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Your Tickets</a></li>
                                     }
                                     <li><a href="@Url.Action("Index", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Tickets</a></li>
+                                    }
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
                                         <li><a href="@Url.Action("ShowAll", "Projects")"><i class="ion ion-ios-circle-outline"></i> Show All Projects</a></li>
-                                        <li><a href="@Url.Action("ShowAll", "Tickets")"><i class="ion ion-ios-circle-outline"></i> Show All Tickets</a></li>
                                     }
                                 </ul>
+                            </li>
+                            <li>
+                                <a href="@Url.Action("Create", "Tickets")"><i class="ion ion-pricetag"></i> Create Ticket</a>
                             </li>
                         }
                         @if (User.IsInRole("Admin"))
                         {
                             <li>
-                                <a href="@Url.Action("ChangeRoles", "Account")"><i class="ion ion-settings"></i><span>Change Roles</span></a>
+                                <a href="#" class="has-dropdown"><i class="ion ion-settings"></i><span>Admin Functions</span></a>
+                                <ul class="menu-dropdown">
+                                    <li><a href="@Url.Action("ChangeRoles", "Account")"><i class="ion ion-ios-circle-outline"></i> Change Roles</a></li>
+                                    <li><a href="@Url.Action("Index", "TicketTypes")"><i class="ion ion-ios-circle-outline"></i> Manage Types</a></li>
+                                    <li><a href="@Url.Action("Index", "TicketStatuses")"><i class="ion ion-ios-circle-outline"></i> Manage Statuses</a></li>
+                                    <li><a href="@Url.Action("Index", "TicketPriorities")"><i class="ion ion-ios-circle-outline"></i>Manage Priorities</a></li>
+                                </ul>
                             </li>
                         }
 
