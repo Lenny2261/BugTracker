@@ -12,6 +12,7 @@ using BugTracker.Models;
 using System.Collections;
 using System.Data.Entity;
 using System.Web.Security;
+using BugTracker.Helpers;
 
 namespace BugTracker.Controllers
 {
@@ -90,6 +91,8 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult EditRoles(FormCollection form, [Bind(Include = "Id")] string userId)
         {
+            RoleHelper roleHelp = new RoleHelper();
+
             string roleId = form["Roles"].ToString();
 
             ApplicationUser user = db.Users.Where(u => u.Id == userId).FirstOrDefault();
@@ -99,12 +102,14 @@ namespace BugTracker.Controllers
                 var currentRoleID = user.Roles.FirstOrDefault().RoleId;
                 var currentrole = db.Roles.Where(r => r.Id == currentRoleID).FirstOrDefault();
 
-                UserManager.RemoveFromRole(userId, currentrole.Name);
+                roleHelp.RemoveUserFromRole(userId, currentrole.Name);
+                //UserManager.RemoveFromRole(userId, currentrole.Name);
             }
 
             var newRole = db.Roles.Where(r => r.Id == roleId).FirstOrDefault();
 
-            UserManager.AddToRole(userId, newRole.Name);
+            roleHelp.AddUserToRole(userId, newRole.Name);
+            //UserManager.AddToRole(userId, newRole.Name);
 
             return RedirectToAction("ChangeRoles");
         }
@@ -495,6 +500,69 @@ namespace BugTracker.Controllers
             var returnUrl = "";
 
             var result = await SignInManager.PasswordSignInAsync("jmahoney2261@mailinator.com", "penguins82", false, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View();
+            }
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoUserManager()
+        {
+            var returnUrl = "";
+
+            var result = await SignInManager.PasswordSignInAsync("jTwichell@Mailinator.com", "Abc&123!", false, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View();
+            }
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoDev()
+        {
+            var returnUrl = "";
+
+            var result = await SignInManager.PasswordSignInAsync("brentdavis56@Mailinator.com", "password", false, shouldLockout: false);
+            switch (result)
+            {
+                case SignInStatus.Success:
+                    return RedirectToLocal(returnUrl);
+                case SignInStatus.LockedOut:
+                    return View("Lockout");
+                case SignInStatus.RequiresVerification:
+                    return RedirectToAction("SendCode", new { ReturnUrl = returnUrl, RememberMe = false });
+                case SignInStatus.Failure:
+                default:
+                    ModelState.AddModelError("", "Invalid login attempt.");
+                    return View();
+            }
+        }
+
+        [AllowAnonymous]
+        public async Task<ActionResult> DemoSubmitter()
+        {
+            var returnUrl = "";
+
+            var result = await SignInManager.PasswordSignInAsync("codeboys@Mailinator.com", "password", false, shouldLockout: false);
             switch (result)
             {
                 case SignInStatus.Success:

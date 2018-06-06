@@ -1,19 +1,18 @@
-﻿@model BugTracker.Models.ApplicationUser
-
+﻿@model BugTracker.Models.AssignProjects
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        @Html.HiddenFor(u => u.Id)
+        @Html.Hidden("userId", Model.user.Id)
 
         <div class="form-group">
-            Select Projects:
+            Select Projects: (hold ctrl to select multiple)
             <br />
-            @Html.DropDownList("Projects", null, htmlAttributes: new { @class = "form-control" })
+            @Html.ListBoxFor(m => m.selectedProjects, Model.projects, new { @class = "multiSelectList" })
         </div>
         <br />
-        <button type="submit">Submit</button>
+        <button type="submit">Assign</button>
     </div>
 }

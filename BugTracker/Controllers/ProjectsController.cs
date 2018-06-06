@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
 using Microsoft.AspNet.Identity;
+using BugTracker.Helpers;
 
 namespace BugTracker.Controllers
 {
@@ -132,21 +133,48 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult ManageUsers()
         {
+            RoleHelper roleHelp = new RoleHelper();
 
-            var model = db.Users.ToList();
+            var model = roleHelp.UsersNotInRole("Submitter").ToList();
 
             return View(model);
         }
 
         [Authorize(Roles = "Admin, ProjectManager")]
-        public ActionResult AssignUsers()
+        public ActionResult ShowAll()
         {
+            return View(db.projects.ToList());
+        }
 
-            var model = db.Users.Where(u => u.Id == User.Identity.GetUserId()).FirstOrDefault();
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignUsers(string userId)
+        {
+            var userIn = db.Users.Where(u => u.Id == userId).FirstOrDefault();
 
-            ViewBag.Projects = db.projects.Where(p => p.projectUsers.FirstOrDefault().Id != model.Id).ToList();
+            var model = new AssignProjects
+            {
+                user = userIn,
+                projects = new MultiSelectList(db.projects.Where(p => p.projectUsers.FirstOrDefault().Id != userIn.Id), "Id", "name")
+            };
 
             return View(model);
+        }
+
+        [HttpPost]
+        [Authorize(Roles = "Admin, ProjectManager")]
+        public ActionResult AssignUsers(AssignProjects model, string userId)
+        {
+
+            model.user = db.Users.Where(u => u.Id == userId).FirstOrDefault();
+
+            for(int index = 0; index < model.selectedProjects.Length; index++)
+            {
+                var projId = model.selectedProjects[index];
+                model.user.Projects.Add(db.projects.Find(projId));
+            }
+
+            db.SaveChanges();
+            return RedirectToAction("Index");
         }
 
         protected override void Dispose(bool disposing)

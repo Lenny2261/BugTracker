@@ -213,8 +213,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\RoleHelper.cs" />
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\AdminViewModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
@@ -3647,6 +3649,7 @@
     <Content Include="Views\Account\EditRoles.cshtml" />
     <Content Include="Views\Projects\ManageUsers.cshtml" />
     <Content Include="Views\Projects\AssignUsers.cshtml" />
+    <Content Include="Views\Projects\ShowAll.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
