@@ -24,19 +24,25 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Details/5
-        [Authorize(Roles = "Admin,ProjectManager,Developer")]
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Details(int? id)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Tickets tickets = db.tickets.Find(id);
-            if (tickets == null)
+            var model = new TicketDetailsViewModel
+            {
+                tickets = db.tickets.Find(id),
+                user = db.Users.Find(User.Identity.GetUserId()),
+                ticketAttachments = db.ticketAttachments.Where(a => a.TicketId == id).ToList(),
+                ticketComments = db.ticketComments.Where(c => c.TicketId == id).ToList()
+            };
+            if (model.tickets == null || model.user == null)
             {
                 return HttpNotFound();
             }
-            return View(tickets);
+            return View(model);
         }
 
         // GET: Tickets/Create

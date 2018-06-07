@@ -64,8 +64,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.description)
         </td>
+        @{
+            var createdBlog = item.created.ToString().Split(' ');
+        }
         <td>
-            @Html.DisplayFor(modelItem => item.created)
+            @createdBlog[0] @createdBlog[1] @createdBlog[2]
         </td>
     </tr>
 }

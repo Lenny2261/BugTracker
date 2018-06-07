@@ -134,6 +134,17 @@ namespace BugTracker.Controllers
 
             var model = roleHelp.UsersNotInRole("Submitter").ToList();
 
+            if (User.IsInRole("Admin"))
+            {
+                model = roleHelp.UsersInRole("ProjectManager").ToList();
+            }
+            else if (User.IsInRole("ProjectManager"))
+            {
+                model = roleHelp.UsersInRole("Developer").ToList();
+            }
+
+            
+
             return View(model);
         }
 

@@ -1,98 +1,110 @@
-﻿@model BugTracker.Models.Tickets
+﻿@model BugTracker.Models.TicketDetailsViewModel
 
 @{
     ViewBag.Title = "Details";
 }
 
-<h2>Details</h2>
+<h2>@Html.DisplayFor(model => model.tickets.title)</h2>
 
 <div>
-    <h4>Tickets</h4>
+    <h4>Ticket Details</h4>
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.Assigned.firstName)
+            Description
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Assigned.firstName)
+            @Html.DisplayFor(model => model.tickets.description)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Owner.firstName)
+            Assigned Employee
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Owner.firstName)
+            @Html.DisplayFor(model => model.tickets.Assigned.firstName) @Html.DisplayFor(model => model.tickets.Assigned.lastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.Project.name)
+            Owner of Ticket
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.Project.name)
+            @Html.DisplayFor(model => model.tickets.Owner.firstName) @Html.DisplayFor(model => model.tickets.Owner.lastName)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketPriority.name)
+            Project
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketPriority.name)
+            @Html.DisplayFor(model => model.tickets.Project.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketStatus.name)
+            Priority
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketStatus.name)
+            @Html.DisplayFor(model => model.tickets.TicketPriority.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.TicketType.name)
+            Status
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.TicketType.name)
+            @Html.DisplayFor(model => model.tickets.TicketStatus.name)
         </dd>
 
         <dt>
-            @Html.DisplayNameFor(model => model.title)
+            Type
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.title)
+            @Html.DisplayFor(model => model.tickets.TicketType.name)
         </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.description)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.description)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.created)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.created)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.updated)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.updated)
-        </dd>
-
     </dl>
-</div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
+    <div>
+        @{
+            var createdBlog = Model.tickets.created.ToString().Split(' ');
+            var updatedBlog = Model.tickets.updated.ToString().Split(' ');
+        }
+        <div style="float: left;"><b>Created:</b> @createdBlog[0] @createdBlog[1] @createdBlog[2]</div>
+        @if (Model.tickets.updated != null)
+        {
+            <div style="float: right;"><b>Updated:</b> @updatedBlog[0] @updatedBlog[1] @updatedBlog[2]</div>
+        }
+    </div>
+
+    <br />
+    <br />
+    @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id || User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id))
+    {
+        <p>
+            @Html.ActionLink("Edit", "Edit", new { id = Model.tickets.Id })
+        </p>
+    }
+    <br />
+    <br />
+    <div>
+        @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id ||
+    User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id) || User.IsInRole("Admin"))
+        {
+            <div class="post-comment" id="testTap">
+                @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <div class="form-group">
+                        <div class="col-md-12 ridOfLeft">
+                            <div class="blog-content">
+                                <button class="btn btn-dafault btn-details" type="submit">Comment</button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        </div>
+
