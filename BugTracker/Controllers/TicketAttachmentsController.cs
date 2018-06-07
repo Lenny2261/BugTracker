@@ -6,6 +6,7 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using BugTracker.Helpers;
 using BugTracker.Models;
 
 namespace BugTracker.Controllers
@@ -15,6 +16,7 @@ namespace BugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TicketAttachments
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var ticketAttachments = db.ticketAttachments.Include(t => t.Ticket).Include(t => t.User);
@@ -22,6 +24,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Create
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Create()
         {
             ViewBag.TicketId = new SelectList(db.tickets, "Id", "title");
@@ -48,22 +52,38 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,filePath,description,created,UserId,fileURL")] TicketAttachments ticketAttachments)
+        public ActionResult Create([Bind(Include = "Id,TicketId,description")] TicketAttachments ticketAttachments, HttpPostedFileBase file)
         {
             if (ModelState.IsValid)
             {
+                FileUploadValidator helper = new FileUploadValidator();
+
+                if (helper.IsWebpageFrendlyFile(file))
+                {
+
+                }
+                else
+                {
+                    TempData["attachCheck"] = "Failure";
+                    return RedirectToAction("Details", "Tickets", new { id = ticketAttachments.TicketId });
+                }
+
                 db.ticketAttachments.Add(ticketAttachments);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                TempData["attachCheck"] = "Success";
+                return RedirectToAction("Details", "Tickets", new { id = ticketAttachments.TicketId });
             }
 
+            TempData["attachCheck"] = "Failure";
             ViewBag.TicketId = new SelectList(db.tickets, "Id", "title", ticketAttachments.TicketId);
             ViewBag.UserId = new SelectList(db.Users, "Id", "firstName", ticketAttachments.UserId);
             return View(ticketAttachments);
         }
 
         // GET: TicketAttachments/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,6 +104,7 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,TicketId,filePath,description,created,UserId,fileURL")] TicketAttachments ticketAttachments)
         {
@@ -99,6 +120,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,6 +137,7 @@ namespace BugTracker.Controllers
 
         // POST: TicketAttachments/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

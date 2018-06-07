@@ -86,28 +86,27 @@
             @Html.ActionLink("Edit", "Edit", new { id = Model.tickets.Id })
         </p>
     }
-        <div class="row">
+    <div class="row">
+        @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id ||
+    User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id) || User.IsInRole("Admin"))
+        {
             <div class="col-md-6">
-                @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id ||
-            User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id) || User.IsInRole("Admin"))
-                {
-                    <div class="post-comment" id="testTap">
-                        @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal" }))
-                        {
-                            @Html.AntiForgeryToken()
+                <div class="post-comment" id="testTap">
+                    @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.AntiForgeryToken()
 
-                            @Html.Hidden("TicketId", Model.tickets.Id);
+                        @Html.Hidden("TicketId", Model.tickets.Id);
 
-                            @Html.Action("Create", "TicketComments")
+                        @Html.Action("Create", "TicketComments")
 
-                            <div class="form-group">
-                                <div class="col-md-12 ridOfLeft" style="padding-left: 245px;">
-                                    <button class="btn btn-dafault btn-dark" type="submit">Comment</button>
-                                </div>
+                        <div class="form-group">
+                            <div class="col-md-12 ridOfLeft" style="padding-left: 245px;">
+                                <button class="btn btn-dafault btn-dark" type="submit">Comment</button>
                             </div>
-                        }
-                    </div>
-                }
+                        </div>
+                    }
+                </div>
             </div>
             <div class="col-md-6">
                 @using (Html.BeginForm("Create", "TicketAttachment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
@@ -118,6 +117,14 @@
 
                     <input name="image" type="file" class="form-control" id="fileUpload" />
                     @Html.ValidationMessageFor(model => model.tickets.ticketAttachments.FirstOrDefault().fileURL, "", new { @class = "text-danger" })
+                    <br />
+                    <div class="form-group">
+                        @Html.LabelFor(model => model.tickets.ticketAttachments.FirstOrDefault().description, "Description", htmlAttributes: new { @class = "control-label col-md-2 ridOfLeft" })
+                        <div class="col-md-12" style="padding-left: 0px;">
+                            @Html.EditorFor(model => model.tickets.ticketAttachments.FirstOrDefault().description, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.tickets.ticketAttachments.FirstOrDefault().description, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
 
                     <br />
                     <div class="form-group">
@@ -127,7 +134,8 @@
                     </div>
                 }
             </div>
-        </div>
+        }
+    </div>
 
     <br />
     <div class="row">
@@ -153,7 +161,31 @@
                     <img style="height: 25px; width: 25px; float: left; margin-right: 10px;" alt="image" src="@item.icon" />
                     <a href="@item.filePath" download="@item.fileURL"></a>
                 </div>
+                <div>
+                    @item.description
+                </div>
             }
         </div>
     </div>
 
+    @section scripts{
+        <script>
+        var check = '@TempData["attachCheck"]';
+        if (check == "Success") {
+            window.onload = function () {
+                swal(
+                    'Submitted!',
+                    "Your file has been submitted successfully!",
+                    'success'
+                )
+            }
+        }
+        else if (check == "Failure") {
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: 'Something went wrong! Your file has not been uploaded! Please make sure it&#039;s a valid file format. Accepted Formats: (.doc, .docx, .xls, .xlsx, .pdf, .png, and .jpg)',
+            })
+        }
+        </script>
+    }

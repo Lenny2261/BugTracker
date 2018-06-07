@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bug Obliterator</title>
+    <title>Bug Eraser</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link rel="stylesheet" href="~/dist/modules/bootstrap/css/bootstrap.min.css">
@@ -27,12 +27,12 @@
                 <form class="form-inline mr-auto">
                     <ul class="navbar-nav mr-3">
                         <li><a href="#" data-toggle="sidebar" class="nav-link nav-link-lg"><i class="ion ion-navicon-round"></i></a></li>
-                        <li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="ion ion-search"></i></a></li>
+                        @*<li><a href="#" data-toggle="search" class="nav-link nav-link-lg d-sm-none"><i class="ion ion-search"></i></a></li>*@
                     </ul>
-                    <div class="search-element">
-                        <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-                        <button class="btn" type="submit"><i class="ion ion-search"></i></button>
-                    </div>
+                    @*<div class="search-element">
+                            <input class="form-control" type="search" placeholder="Search" aria-label="Search">
+                            <button class="btn" type="submit"><i class="ion ion-search"></i></button>
+                        </div>*@
                 </form>
                 <ul class="navbar-nav navbar-right">
                     <li class="dropdown dropdown-list-toggle">
@@ -56,7 +56,7 @@
             <div class="main-sidebar">
                 <aside id="sidebar-wrapper">
                     <div class="sidebar-brand">
-                        <a href="@Url.Action("Index", "Home")">Bug Tracker</a>
+                        <a href="@Url.Action("Index", "Home")">Bug Eraser</a>
                     </div>
                     @if (User.Identity.IsAuthenticated)
                     {
@@ -154,6 +154,7 @@
     <script src="~/dist/modules/chart.min.js"></script>
     <script src="~/dist/modules/summernote/summernote-lite.js"></script>
     <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
+    @Scripts.Render("https://unpkg.com/sweetalert2@7.21.1/dist/sweetalert2.all.js")
     <script>
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {
