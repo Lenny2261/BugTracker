@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Helpers;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -62,6 +64,22 @@ namespace BugTracker.Controllers
 
                 if (helper.IsWebpageFrendlyFile(file))
                 {
+                    var extention = Path.GetExtension(file.FileName);
+                    var fileName = Path.GetFileName(file.FileName);
+                    file.SaveAs(Path.Combine(Server.MapPath("~/UploadedFiles/"), fileName));
+                    ticketAttachments.fileURL = "/UploadedFiles/" + fileName;
+                    ticketAttachments.filePath = Path.GetFileNameWithoutExtension(file.FileName);
+
+                    if (extention == ".doc" || extention == ".docx")
+                        ticketAttachments.icon = "/Attachments/word.png";
+                    else if (extention == ".xls" || extention == ".xlsx")
+                        ticketAttachments.icon = "/Attachments/excel.png";
+                    else if (extention == ".pdf")
+                        ticketAttachments.icon = "/Attachments/pdf.png";
+                    else if (extention == ".png" || extention == ".jpg" || extention == ".jpeg")
+                        ticketAttachments.icon = "/Attachments/image.png";
+                    else
+                        ticketAttachments.icon = "/Attachments/default.png";
 
                 }
                 else
@@ -70,6 +88,8 @@ namespace BugTracker.Controllers
                     return RedirectToAction("Details", "Tickets", new { id = ticketAttachments.TicketId });
                 }
 
+                ticketAttachments.UserId = User.Identity.GetUserId();
+                ticketAttachments.created = DateTimeOffset.Now;
                 db.ticketAttachments.Add(ticketAttachments);
                 db.SaveChanges();
                 TempData["attachCheck"] = "Success";

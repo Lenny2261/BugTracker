@@ -3259,6 +3259,11 @@
     <Content Include="fonts\Roboto\LICENSE.txt" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Attachements\default.png" />
+    <Content Include="Attachements\excel.png" />
+    <Content Include="Attachements\image.png" />
+    <Content Include="Attachements\pdf.png" />
+    <Content Include="Attachements\word.png" />
     <Content Include="images\auth\login_1.jpg" />
     <Content Include="images\auth\register.jpg" />
     <Content Include="images\faces-clipart\pic-1.png" />

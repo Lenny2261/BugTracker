@@ -109,14 +109,15 @@
                 </div>
             </div>
             <div class="col-md-6">
-                @using (Html.BeginForm("Create", "TicketAttachment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+                @using (Html.BeginForm("Create", "TicketAttachments", FormMethod.Post, new { enctype = "Multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
 
                     @Html.Hidden("TicketId", Model.tickets.Id);
 
-                    <input name="image" type="file" class="form-control" id="fileUpload" />
-                    @Html.ValidationMessageFor(model => model.tickets.ticketAttachments.FirstOrDefault().fileURL, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        <input name="file" type="file" class="form-control" id="fileUpload" />
+                    </div>
                     <br />
                     <div class="form-group">
                         @Html.LabelFor(model => model.tickets.ticketAttachments.FirstOrDefault().description, "Description", htmlAttributes: new { @class = "control-label col-md-2 ridOfLeft" })
@@ -164,6 +165,7 @@
                 <div>
                     @item.description
                 </div>
+                <br />
             }
         </div>
     </div>

@@ -21,25 +21,10 @@ namespace BugTracker
     {
         public async Task SendAsync(IdentityMessage message)
         {
-            // Plug in your email service here to send an email.
-            await SendMailAsync(message);
-            //return Task.FromResult(0);
-        }
-
-        public async Task<bool> SendMailAsync(IdentityMessage message)
-        {
             var GmailUsername = WebConfigurationManager.AppSettings["username"];
             var GmailPassword = WebConfigurationManager.AppSettings["password"];
             var host = WebConfigurationManager.AppSettings["host"];
             int port = Convert.ToInt32(WebConfigurationManager.AppSettings["port"]);
-
-            var from = new MailAddress(WebConfigurationManager.AppSettings["emailfrom"], "BugTracker");
-
-            var email = new MailMessage(from, new MailAddress(message.Destination)){
-                Subject = message.Subject,
-                Body = message.Body,
-                IsBodyHtml = true,
-            };
 
             using (var smtp = new SmtpClient()
             {
@@ -50,15 +35,21 @@ namespace BugTracker
                 UseDefaultCredentials = false,
                 Credentials = new NetworkCredential(GmailUsername, GmailPassword)
             })
+
+            using (var email = new MailMessage("BugTracker<jmahoney2261@gmail.com>", message.Destination)
+            {
+                Subject = message.Subject,
+                Body = message.Body,
+                IsBodyHtml = true,
+            }) 
+
             {
                 try
                 {
                     await smtp.SendMailAsync(email);
-                    return true;
                 }
                 catch (Exception)
                 {
-                    return false;
                 }
             }
         }

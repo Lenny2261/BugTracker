@@ -305,15 +305,8 @@ namespace BugTracker.Controllers
 
                 // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                 // Send an email with this link
-                //var svc = new EmailService();
                 string code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                //var msg = new IdentityMessage()
-                //{
-                //    Subject = "Reset Password",
-                //    Body = "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>",
-                //    Destination = user.Email
-                //};
                 await UserManager.SendEmailAsync(user.Id, "Reset Password", "Please reset your password by clicking <a href=\"" + callbackUrl + "\">here</a>");
                 return RedirectToAction("ForgotPasswordConfirmation", "Account");
             }

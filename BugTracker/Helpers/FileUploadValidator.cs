@@ -39,7 +39,7 @@ namespace BugTracker.Helpers
             }
             catch (Exception)
             {
-                return false;
+                return true;
             }
         }
     }
