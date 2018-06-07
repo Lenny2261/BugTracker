@@ -32,6 +32,11 @@ namespace BugTracker.Models
         public TicketAttachments ticketAttachments { get; set; }
     }
 
+    public class NotificationViewModel
+    {
+        public ICollection<TicketNotifications> notifications { get; set; }
+        public ApplicationUser currentUser { get; set; }
+    }
     //public class ManageUserViewModel
     //{
     //    public ICollection<ApplicationUser> users { get; set; }

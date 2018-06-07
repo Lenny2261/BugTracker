@@ -1,0 +1,54 @@
+﻿@model BugTracker.Models.NotificationViewModel
+
+@{
+    Layout = null;
+}
+
+@if (User.IsInRole("Developer"))
+{
+    if (Model.notifications == null)
+    {
+        <li class="dropdown dropdown-list-toggle">
+            <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i class="ion ion-ios-bell-outline"></i></a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                <div class="dropdown-header">
+                    Notifications
+                    <div class="float-right">
+                        <a href="#">View All</a>
+                    </div>
+                </div>
+                <div class="dropdown-list-content">
+                </div>
+            </div>
+        </li>
+    }
+    else
+    {
+        <li class="dropdown dropdown-list-toggle">
+            <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg beep"><i class="ion ion-ios-bell-outline"></i></a>
+            <div class="dropdown-menu dropdown-list dropdown-menu-right">
+                <div class="dropdown-header notification-header">
+                    Notifications
+                </div>
+
+                <div class="dropdown-list-content overflow-notification">
+                    @foreach (var item in Model.notifications)
+                    {
+                        using (Html.BeginForm("_UserNotifications", "TicketNotifications"))
+                        {
+                            <button class="btn-custom" type="submit">
+                                @Html.Hidden("TicketId", item.Ticket.Id)
+                                @Html.Hidden("Id", item.Id)
+                                @Html.Hidden("notification", item.notification)
+                                @Html.Hidden("UserId", item.UserId)
+                                <div class="dropdown-item-desc line-height">
+                                    @item.notification
+                                </div>
+                            </button>
+                            }
+                     }
+                    </div>
+            </div>
+        </li>
+    }
+}

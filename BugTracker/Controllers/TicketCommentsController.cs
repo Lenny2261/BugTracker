@@ -61,6 +61,16 @@ namespace BugTracker.Controllers
                 ticketComments.UserId = User.Identity.GetUserId();
                 ticketComments.created = DateTimeOffset.Now;
 
+                if(User.IsInRole("ProjectManager") || User.IsInRole("Submitter"))
+                {
+                    TicketNotifications notify = new TicketNotifications();
+                    notify.TicketId = ticketComments.TicketId;
+                    notify.UserId = (string)TempData["assignedId"];
+                    notify.seen = false;
+                    notify.notification = (string)TempData["Title"] + " has a new comment";
+                    db.ticketNotifications.Add(notify);
+                }
+
                 db.ticketComments.Add(ticketComments);
                 db.SaveChanges();
                 return RedirectToAction("Details", "Tickets", new { id = ticketComments.TicketId });

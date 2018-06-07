@@ -88,6 +88,16 @@ namespace BugTracker.Controllers
                     return RedirectToAction("Details", "Tickets", new { id = ticketAttachments.TicketId });
                 }
 
+                if(User.IsInRole("ProjectManager") || User.IsInRole("Submitter"))
+                {
+                    TicketNotifications notify = new TicketNotifications();
+                    notify.TicketId = ticketAttachments.TicketId;
+                    notify.UserId = (string)TempData["assignedId"];
+                    notify.seen = false;
+                    notify.notification = (string)TempData["Title"] + " has a new attachment";
+                    db.ticketNotifications.Add(notify);
+                }
+
                 ticketAttachments.UserId = User.Identity.GetUserId();
                 ticketAttachments.created = DateTimeOffset.Now;
                 db.ticketAttachments.Add(ticketAttachments);

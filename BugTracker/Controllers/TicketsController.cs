@@ -135,6 +135,28 @@ namespace BugTracker.Controllers
                     tickets.TicketPriorityId = (int)TempData["TicketPriorityId"];
                 }
 
+                if (User.IsInRole("ProjectManager") || User.IsInRole("Submitter"))
+                {
+                    if(tickets.AssignedId != (string)TempData["AssignedId"])
+                    {
+                        TicketNotifications notify = new TicketNotifications();
+                        notify.TicketId = tickets.Id;
+                        notify.UserId = tickets.AssignedId;
+                        notify.seen = false;
+                        notify.notification = "You have been assigned to ticket " + (string)TempData["Title"];
+                        db.ticketNotifications.Add(notify);
+                    }
+                    else
+                    {
+                        TicketNotifications notify = new TicketNotifications();
+                        notify.TicketId = tickets.Id;
+                        notify.UserId = tickets.AssignedId;
+                        notify.seen = false;
+                        notify.notification = (string)TempData["Title"] + " has been modifyed";
+                        db.ticketNotifications.Add(notify);
+                    }
+                }
+
                 tickets.updated = DateTimeOffset.Now;
                 tickets.created = (DateTimeOffset)TempData["CreatedDate"];
                 tickets.ProjectID = (int)TempData["ProjectId"];

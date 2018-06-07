@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -122,6 +123,35 @@ namespace BugTracker.Controllers
             db.ticketNotifications.Remove(ticketNotifications);
             db.SaveChanges();
             return RedirectToAction("Index");
+        }
+
+        public ActionResult _UserNotifications()
+        {
+            string userId = User.Identity.GetUserId();
+
+            var model = new NotificationViewModel
+            {
+                notifications = db.ticketNotifications.Where(n => n.UserId == userId).Where(n => n.seen == false).OrderByDescending(n => n.Ticket.created).ToList(),
+                currentUser = db.Users.Find(userId)
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult _UserNotifications(int Id, string notification, int TicketId, string UserId)
+        {
+            TicketNotifications notifications = new TicketNotifications();
+
+            notifications.seen = true;
+            notifications.Id = Id;
+            notifications.UserId = UserId;
+            notifications.TicketId = TicketId;
+
+
+            db.Entry(notifications).State = EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Details", "Tickets", new { id = notifications.TicketId });
         }
 
         protected override void Dispose(bool disposing)
