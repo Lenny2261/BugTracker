@@ -86,43 +86,74 @@
             @Html.ActionLink("Edit", "Edit", new { id = Model.tickets.Id })
         </p>
     }
+        <div class="row">
+            <div class="col-md-6">
+                @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id ||
+            User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id) || User.IsInRole("Admin"))
+                {
+                    <div class="post-comment" id="testTap">
+                        @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal" }))
+                        {
+                            @Html.AntiForgeryToken()
 
-    <div>
-        @if (Model.tickets.AssignedId == Model.user.Id || Model.tickets.OwnerId == Model.user.Id ||
-    User.IsInRole("ProjectManager") && Model.tickets.Project.projectUsers.Select(p => p.Id).Contains(Model.user.Id) || User.IsInRole("Admin"))
-        {
-            <div class="post-comment" id="testTap">
-                @using (Html.BeginForm("Create", "TicketComments", FormMethod.Post, new { @class = "form-horizontal" }))
+                            @Html.Hidden("TicketId", Model.tickets.Id);
+
+                            @Html.Action("Create", "TicketComments")
+
+                            <div class="form-group">
+                                <div class="col-md-12 ridOfLeft" style="padding-left: 245px;">
+                                    <button class="btn btn-dafault btn-dark" type="submit">Comment</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="col-md-6">
+                @using (Html.BeginForm("Create", "TicketAttachment", FormMethod.Post, new { enctype = "Multipart/form-data" }))
                 {
                     @Html.AntiForgeryToken()
 
                     @Html.Hidden("TicketId", Model.tickets.Id);
 
-                    @Html.Action("Create", "TicketComments")
+                    <input name="image" type="file" class="form-control" id="fileUpload" />
+                    @Html.ValidationMessageFor(model => model.tickets.ticketAttachments.FirstOrDefault().fileURL, "", new { @class = "text-danger" })
 
+                    <br />
                     <div class="form-group">
-                        <div class="col-md-12 ridOfLeft" style="padding-left: 245px;">
-                                <button class="btn btn-dafault btn-dark" type="submit">Comment</button>
+                        <div class="col-md-12 ridOfLeft" style="padding-left: 165px;">
+                            <button class="btn btn-dafault btn-dark" type="submit">Attach File</button>
                         </div>
                     </div>
                 }
             </div>
-        }
-    </div>
+        </div>
 
     <br />
-    <div>
-        @foreach(var item in Model.tickets.ticketComments)
-        {
-        <div>
-                <img style="height: 25px; width: 25px; float: left; margin-right: 10px;" alt="image" src="@item.User.avatar" /> 
-                <h5>@item.User.firstName @item.User.lastName</h5>
+    <div class="row">
+        <div class="col-md-6">
+            @foreach (var item in Model.tickets.ticketComments)
+            {
+                <div>
+                    <img style="height: 25px; width: 25px; float: left; margin-right: 10px;" alt="image" src="@item.User.avatar" />
+                    <h5>@item.User.firstName @item.User.lastName</h5>
+                </div>
+                <div>
+                    @item.body
+                </div>
+                <br />
+                <br />
+            }
         </div>
-            <div>
-                @item.body
-            </div>
-            <br />
-            <br />
-        }
+        <div class="col-md-6">
+            <h5>File Attachments</h5>
+            @foreach (var item in Model.ticketAttachments)
+            {
+                <div>
+                    <img style="height: 25px; width: 25px; float: left; margin-right: 10px;" alt="image" src="@item.icon" />
+                    <a href="@item.filePath" download="@item.fileURL"></a>
+                </div>
+            }
+        </div>
     </div>
 
