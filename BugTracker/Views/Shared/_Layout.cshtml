@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="~/dist/modules/summernote/summernote-lite.css">
     <link rel="stylesheet" href="~/dist/modules/flag-icon-css/css/flag-icon.min.css">
     <link rel="stylesheet" href="~/dist/css/demo.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.css" />
     <link rel="stylesheet" href="~/dist/css/style.css">
     <link rel="stylesheet" href="~/dist/css/custom.css">
 </head>
@@ -96,13 +97,16 @@
                                     <li><a href="@Url.Action("Index", "Tickets")"><i class="ion ion-ios-circle-outline"></i> All Tickets</a></li>
                                     @if (User.IsInRole("Admin") || User.IsInRole("ProjectManager"))
                                     {
-                                        <li><a href="@Url.Action("ShowAll", "Projects")"><i class="ion ion-ios-circle-outline"></i> Show All Projects</a></li>
+                                        <li><a href="@Url.Action("ShowAll", "Projects")"><i class="ion ion-ios-circle-outline"></i> All Projects</a></li>
                                     }
                                 </ul>
                             </li>
-                            <li>
-                                <a href="@Url.Action("Create", "Tickets")"><i class="ion ion-pricetag"></i> Create Ticket</a>
-                            </li>
+                            if (User.IsInRole("Submitter") || User.IsInRole("Admin"))
+                            {
+                                <li>
+                                    <a href="@Url.Action("Create", "Tickets")"><i class="ion ion-pricetag"></i> Create Ticket</a>
+                                </li>
+                            }
                         }
                         @if (User.IsInRole("Admin"))
                         {
@@ -149,6 +153,7 @@
     <script src="~/dist/js/sa-functions.js"></script>
     <script src="~/dist/modules/chart.min.js"></script>
     <script src="~/dist/modules/summernote/summernote-lite.js"></script>
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs4/dt-1.10.16/datatables.min.js"></script>
     <script>
         var ctx = document.getElementById("myChart").getContext('2d');
         var myChart = new Chart(ctx, {

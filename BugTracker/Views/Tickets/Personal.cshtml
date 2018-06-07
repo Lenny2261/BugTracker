@@ -6,76 +6,84 @@
 
 <h2>Personal Tickets</h2>
 
-<table class="table">
-    <tr>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Assigned Personel</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Submitter of Ticket</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Project</a> 
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Priority</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Status</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Type of Ticket</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Name</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Description</a>
-        </th>
-        <th>
-            <a href="@Url.Action("Personal", "Tickets")" id="sortLinks">Date Created</a>
-        </th>
-        <th></th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Assigned.firstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Owner.firstName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Project.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketPriority.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketStatus.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.TicketType.name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.title)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.description)
-        </td>
-        @{ 
-            var createdBlog = item.created.ToString().Split(' ');
+<table class="table" id="personalTable">
+    <thead>
+        <tr>
+            <th>
+                Assigned Personel
+            </th>
+            <th>
+                Submitter of Ticket
+            </th>
+            <th>
+                Project
+            </th>
+            <th>
+                Priority
+            </th>
+            <th>
+                Status
+            </th>
+            <th>
+                Type of Ticket
+            </th>
+            <th>
+                Name
+            </th>
+            <th>
+                Description
+            </th>
+            <th>
+                Date Created
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Assigned.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Owner.firstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Project.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketPriority.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketStatus.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.TicketType.name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.description)
+                </td>
+                @{
+                    var createdBlog = item.created.ToString().Split(' ');
+                }
+                <td>
+                    @createdBlog[0] @createdBlog[1] @createdBlog[2]
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { id = item.Id })
+                    @Html.ActionLink("Details", "Details", new { id = item.Id })
+                </td>
+            </tr>
         }
-        <td>
-            @createdBlog[0] @createdBlog[1] @createdBlog[2]
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id = item.Id })
-            @Html.ActionLink("Details", "Details", new { id = item.Id })
-        </td>
-    </tr>
-    }
-
+    </tbody>
 </table>
+
+@section scripts{
+    <script>
+        $('#personalTable').DataTable();
+    </script>      
+}

@@ -14,3 +14,7 @@
         text-decoration: none;
         color: #574B90;
     }
+
+#longText{
+    max-width: none;
+}

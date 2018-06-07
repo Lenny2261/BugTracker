@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using BugTracker.Models;
+using Microsoft.AspNet.Identity;
 
 namespace BugTracker.Controllers
 {
@@ -15,6 +16,7 @@ namespace BugTracker.Controllers
         private ApplicationDbContext db = new ApplicationDbContext();
 
         // GET: TicketComments
+        [Authorize(Roles = "Admin")]
         public ActionResult Index()
         {
             var ticketComments = db.ticketComments.Include(t => t.Ticket).Include(t => t.User);
@@ -22,6 +24,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Details/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Details(int? id)
         {
             if (id == null)
@@ -37,6 +40,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Create
+        [Authorize(Roles = "Admin,ProjectManager,Submitter,Developer")]
         public ActionResult Create()
         {
             ViewBag.TicketId = new SelectList(db.tickets, "Id", "title");
@@ -48,14 +52,18 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin,ProjectManager,Submitter,Developer")]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,TicketId,body,created,UserId")] TicketComments ticketComments)
+        public ActionResult Create([Bind(Include = "Id,TicketId,body")] TicketComments ticketComments)
         {
             if (ModelState.IsValid)
             {
+                ticketComments.UserId = User.Identity.GetUserId();
+                ticketComments.created = DateTimeOffset.Now;
+
                 db.ticketComments.Add(ticketComments);
                 db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("Details", "Tickets", new { id = ticketComments.TicketId });
             }
 
             ViewBag.TicketId = new SelectList(db.tickets, "Id", "title", ticketComments.TicketId);
@@ -64,6 +72,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Edit/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Edit(int? id)
         {
             if (id == null)
@@ -84,6 +93,7 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "Id,TicketId,body,created,UserId")] TicketComments ticketComments)
         {
@@ -99,6 +109,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketComments/Delete/5
+        [Authorize(Roles = "Admin")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -115,6 +126,7 @@ namespace BugTracker.Controllers
 
         // POST: TicketComments/Delete/5
         [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
