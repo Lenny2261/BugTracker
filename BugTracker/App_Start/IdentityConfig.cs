@@ -36,7 +36,7 @@ namespace BugTracker
                 Credentials = new NetworkCredential(GmailUsername, GmailPassword)
             })
 
-            using (var email = new MailMessage("BugTracker<jmahoney2261@gmail.com>", message.Destination)
+            using (var email = new MailMessage(WebConfigurationManager.AppSettings["emailFrom"], message.Destination)
             {
                 Subject = message.Subject,
                 Body = message.Body,
@@ -48,10 +48,12 @@ namespace BugTracker
                 {
                     await smtp.SendMailAsync(email);
                 }
-                catch (Exception)
+                catch (Exception e)
                 {
+                    Console.WriteLine(e.Message);
+                    //await Task.FromResult
                 }
-            }
+            };
         }
     }
 
