@@ -1,2 +1,281 @@
-﻿
+﻿@model BugTracker.Models.DashboardViewModel
 
+<div>
+    <section>
+        <h1 class="section-header">
+            <div>Dashboard</div>
+        </h1>
+        <br />
+        @if (User.IsInRole("Submitter"))
+        {
+            <h3>Tickets You Made</h3>
+            <br />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            Assigned Personel
+                        </th>
+                        <th>
+                            Project
+                        </th>
+                        <th>
+                            Priority
+                        </th>
+                        <th>
+                            Status
+                        </th>
+                        <th>
+                            Type of Ticket
+                        </th>
+                        <th>
+                            Name
+                        </th>
+                        <th>
+                            Description
+                        </th>
+                        <th>
+                            Date Created
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.tickets)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Assigned.firstName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Project.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketPriority.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketStatus.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.TicketType.name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.title)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.description)
+                            </td>
+                            @{
+                                var createdBlog = item.created.ToString().Split(' ');
+                            }
+                            <td>
+                                @createdBlog[0] @createdBlog[1] @createdBlog[2]
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else if (User.IsInRole("Developer"))
+        {
+            <div class="row">
+                <div class="col-md-9">
+                    <h3>Tickets You Are Assigned to</h3>
+                    <br />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Submitter of Ticket
+                                </th>
+                                <th>
+                                    Project
+                                </th>
+                                <th>
+                                    Priority
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Type of Ticket
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.tickets)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner.firstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketPriority.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketStatus.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketType.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h3>Projects You Are On</h3>
+                    <br />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Project Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.projects)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="row">
+                <div class="col-md-9">
+                    <h3>Tickets From Projects You Are The Manager For</h3>
+                    <br />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Personel Assigned
+                                </th>
+                                <th>
+                                    Submitter of Ticket
+                                </th>
+                                <th>
+                                    Project
+                                </th>
+                                <th>
+                                    Priority
+                                </th>
+                                <th>
+                                    Status
+                                </th>
+                                <th>
+                                    Type of Ticket
+                                </th>
+                                <th>
+                                    Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.tickets)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Assigned.firstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Owner.firstName)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.Project.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketPriority.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketStatus.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.TicketType.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.title)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+                <div class="col-md-3">
+                    <h3>Projects You Are On</h3>
+                    <br />
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>
+                                    Project Name
+                                </th>
+                                <th>
+                                    Description
+                                </th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var item in Model.projects)
+                            {
+                                <tr>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.name)
+                                    </td>
+                                    <td>
+                                        @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        }
+    </section>
+</div>
+
+@section scripts{
+    <script>
+        $('.table').DataTable();
+    </script>
+}

@@ -26,10 +26,8 @@ namespace BugTracker.Models
     public class DashboardViewModel
     {
         public ApplicationUser user { get; set; }
-        public Projects projects { get; set; }
-        public Tickets tickets { get; set; }
-        public TicketComments ticketComments { get; set; }
-        public TicketAttachments ticketAttachments { get; set; }
+        public ICollection<Projects> projects { get; set; }
+        public ICollection<Tickets> tickets { get; set; }
     }
 
     public class NotificationViewModel
