@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Personal Tickets</h2>
+<h2>Project Tickets</h2>
 
 <table class="table">
     <tr>
@@ -65,8 +65,11 @@
             <td>
                 @Html.DisplayFor(modelItem => item.description)
             </td>
+            @{ 
+                var createdDate = item.created.ToString().Split(' ');
+            }
             <td>
-                @Html.DisplayFor(modelItem => item.created)
+                @createdDate[0] @createdDate[1] @createdDate[2]
             </td>
         </tr>
     }

@@ -19,6 +19,11 @@ namespace BugTracker.Controllers
 
             var userId = User.Identity.GetUserId();
 
+            if (User.IsInRole("Admin"))
+            {
+                return RedirectToAction("AdminDashboard");
+            }
+
             if (User.IsInRole("Submitter"))
             {
 
@@ -50,6 +55,23 @@ namespace BugTracker.Controllers
                 projects = db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(userId)).ToList(),
                 tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList()
             };
+            return View(model);
+        }
+
+        
+        public ActionResult AdminDashboard()
+        {
+
+
+            var userId = User.Identity.GetUserId();
+
+            var model = new DashboardViewModel
+            {
+                user = db.Users.Find(userId),
+                projects = db.projects.ToList(),
+                tickets = db.tickets.ToList()
+            };
+
             return View(model);
         }
     }
