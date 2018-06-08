@@ -36,7 +36,8 @@ namespace BugTracker.Controllers
                 tickets = db.tickets.Find(id),
                 user = db.Users.Find(User.Identity.GetUserId()),
                 ticketAttachments = db.ticketAttachments.Where(a => a.TicketId == id).ToList(),
-                ticketComments = db.ticketComments.Where(c => c.TicketId == id).ToList()
+                ticketComments = db.ticketComments.Where(c => c.TicketId == id).ToList(),
+                ticketHistories = db.ticketHistories.Where(h => h.TicketId == id).ToList()
             };
             if (model.tickets == null || model.user == null)
             {
@@ -152,7 +153,7 @@ namespace BugTracker.Controllers
                         notify.TicketId = tickets.Id;
                         notify.UserId = tickets.AssignedId;
                         notify.seen = false;
-                        notify.notification = (string)TempData["Title"] + " has been modifyed";
+                        notify.notification = (string)TempData["Title"] + " has been modified";
                         db.ticketNotifications.Add(notify);
                     }
                 }

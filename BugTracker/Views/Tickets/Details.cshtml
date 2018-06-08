@@ -175,10 +175,61 @@
     </div>
 
     <div>
-        <h5>History Of Changes</h5>
+        <h5>Changes to Ticket</h5>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Property Changed
+                    </th>
+                    <th>
+                        Old Value
+                    </th>
+                    <th>
+                        New Value
+                    </th>
+                    <th>
+                        Changed
+                    </th>
+                    <th>
+                        Modifier
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.ticketHistories)
+                {
+                    <tr>
+                        <td>
+                            @item.property
+                        </td>
+                        <td>
+                            @item.oldValue
+                        </td>
+                        <td>
+                            @item.newValue
+                        </td>
+                        @{
+                            var changeDate = item.changed.ToString().Split(' ');
+                        }
+                        <td>
+                            @changeDate[0] @changeDate[1] @changeDate[2]
+                        </td>
+                        <td>
+                            @item.User.firstName @item.User.lastName
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
     </div>
 
     @section scripts{
+
+        <script>
+            $('.table').DataTable();
+        </script>
+
         <script>
         var check = '@TempData["attachCheck"]';
         if (check == "Success") {

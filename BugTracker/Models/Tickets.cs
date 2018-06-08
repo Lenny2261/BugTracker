@@ -39,5 +39,6 @@ namespace BugTracker.Models
         public virtual TicketPriorities TicketPriority { get; set; }
         public virtual ApplicationUser Assigned { get; set; }
         public virtual ApplicationUser Owner { get; set; }
+        public virtual ApplicationUser Modifier { get; set; }
     }
 }

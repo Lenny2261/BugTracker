@@ -21,6 +21,7 @@ namespace BugTracker.Models
         public Tickets tickets { get; set; }
         public ICollection<TicketComments> ticketComments { get; set; }
         public ICollection<TicketAttachments> ticketAttachments { get; set; }
+        public ICollection<TicketHistories> ticketHistories { get; set; }
     }
 
     public class DashboardViewModel
