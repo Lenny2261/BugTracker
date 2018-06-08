@@ -18,6 +18,7 @@ namespace BugTracker.Models
         public int TicketPriorityId { get; set; }
         public string AssignedId { get; set; }
         public string OwnerId { get; set; }
+        public string ModifierId { get; set; }
 
         public virtual ICollection<TicketAttachments> ticketAttachments { get; set; }
         public virtual ICollection<TicketComments> ticketComments { get; set; }

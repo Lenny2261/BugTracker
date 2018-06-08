@@ -6,18 +6,17 @@
 
 @if (User.IsInRole("Developer"))
 {
-    if (Model.notifications == null)
+    if (Model.notifications.FirstOrDefault() == null)
     {
         <li class="dropdown dropdown-list-toggle">
             <a href="#" data-toggle="dropdown" class="nav-link notification-toggle nav-link-lg"><i class="ion ion-ios-bell-outline"></i></a>
             <div class="dropdown-menu dropdown-list dropdown-menu-right">
-                <div class="dropdown-header">
+                <div class="dropdown-header notification-header">
                     Notifications
-                    <div class="float-right">
-                        <a href="#">View All</a>
-                    </div>
                 </div>
-                <div class="dropdown-list-content">
+
+                <div class="dropdown-list-content overflow-notification">
+
                 </div>
             </div>
         </li>
@@ -45,9 +44,9 @@
                                     @item.notification
                                 </div>
                             </button>
-                            }
-                     }
-                    </div>
+                        }
+                    }
+                </div>
             </div>
         </li>
     }

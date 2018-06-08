@@ -35,7 +35,10 @@
                         </div>*@
                 </form>
                 <ul class="navbar-nav navbar-right">
-                    @Html.Action("_UserNotifications", "TicketNotifications")
+                    @if (User.IsInRole("Developer"))
+                    {
+                        @Html.Action("_UserNotifications", "TicketNotifications")
+                    }
                     @Html.Action("_LoginPartial", "Account")
                 </ul>
             </nav>
@@ -54,7 +57,7 @@
                         {
                             <li class="menu-header">Dashboard</li>
                             <li>
-                                <a href=""><i class="ion ion-speedometer"></i><span>Dashboard</span></a>
+                                <a href="@Url.Action("Index", "Profile")"><i class="ion ion-speedometer"></i><span>Dashboard</span></a>
                             </li>
                         }
                         <li class="menu-header">Components</li>

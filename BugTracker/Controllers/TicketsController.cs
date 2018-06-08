@@ -157,6 +157,7 @@ namespace BugTracker.Controllers
                     }
                 }
 
+                tickets.ModifierId = User.Identity.GetUserId();
                 tickets.updated = DateTimeOffset.Now;
                 tickets.created = (DateTimeOffset)TempData["CreatedDate"];
                 tickets.ProjectID = (int)TempData["ProjectId"];
