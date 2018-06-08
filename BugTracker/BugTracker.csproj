@@ -244,6 +244,8 @@
     <Content Include="Avatar\cplus.png" />
     <Content Include="Avatar\csharp.png" />
     <Content Include="Avatar\default-avatar.png" />
+    <Content Include="Avatar\destiny-Wallpaper-Widescreen-number-Q0y %282%29.jpg" />
+    <Content Include="Avatar\masterrace.png" />
     <Content Include="Avatar\Port.jpg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
@@ -3554,6 +3556,7 @@
     <Content Include="Content\bootstrap-grid.min.css.map" />
     <Content Include="Content\bootstrap-grid.css.map" />
     <Content Include="Private.config" />
+    <None Include="Properties\PublishProfiles\jmtracker - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.3.1.intellisense.js" />
     <Content Include="Scripts\jquery-3.3.1.js" />
     <Content Include="Scripts\jquery-3.3.1.min.js" />
@@ -3573,6 +3576,7 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
+    <Content Include="UploadedFiles\destiny-Wallpaper-Widescreen-number-Q0y.jpg" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -3678,7 +3682,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
