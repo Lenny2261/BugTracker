@@ -96,10 +96,9 @@
 
                 <input name="image" type="file" class="form-control" id="fileUpload" />
                 @Html.ValidationMessageFor(model => model.currentUser.avatar, "", new { @class = "text-danger" })
+                <br />
 
-                <div class="blog-content">
-                    <button class="btn btn-dafault btn-details" type="submit">Submit</button>
-                </div>
+                    <button class="btn btn-dafault btn-dark" type="submit">Submit</button>
             }
         </dd>
     </dl>

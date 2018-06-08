@@ -37,7 +37,13 @@
                 <ul class="navbar-nav navbar-right">
                     @if (User.IsInRole("Developer"))
                     {
-                        @Html.Action("_UserNotifications", "TicketNotifications")
+                        try
+                        {
+                            @Html.Action("_UserNotifications", "TicketNotifications")
+                        }
+                        catch (Exception)
+                        {
+                        }
                     }
                     @Html.Action("_LoginPartial", "Account")
                 </ul>
