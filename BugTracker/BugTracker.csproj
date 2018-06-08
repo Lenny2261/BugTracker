@@ -241,7 +241,10 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Avatar\cplus.png" />
+    <Content Include="Avatar\csharp.png" />
     <Content Include="Avatar\default-avatar.png" />
+    <Content Include="Avatar\Port.jpg" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
     <Content Include="Content\bootstrap-reboot.css" />
@@ -3570,7 +3573,6 @@
     <Content Include="Scripts\umd\popper-utils.min.js" />
     <Content Include="Scripts\umd\popper.js" />
     <Content Include="Scripts\umd\popper.min.js" />
-    <Content Include="UploadedFiles\word.png" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -3671,11 +3673,11 @@
     <Content Include="Views\Account\ConfirmationSent.cshtml" />
     <Content Include="Views\Tickets\Personal.cshtml" />
     <Content Include="Views\Tickets\DevProjectTickets.cshtml" />
-    <Content Include="UploadedFiles\Password Recovery and Management %28Needs Update%29.pdf" />
     <Content Include="Views\Shared\_UserNotifications.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -8,6 +8,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using BugTracker.Models;
 using System.Data.Entity;
+using BugTracker.Helpers;
+using System.IO;
 
 namespace BugTracker.Controllers
 {
@@ -56,6 +58,7 @@ namespace BugTracker.Controllers
         // GET: /Manage/Index
         public async Task<ActionResult> Index(ManageMessageId? message)
         {
+
             ViewBag.StatusMessage =
                 message == ManageMessageId.ChangePasswordSuccess ? "Your password has been changed."
                 : message == ManageMessageId.SetPasswordSuccess ? "Your password has been set."
@@ -69,12 +72,49 @@ namespace BugTracker.Controllers
             var model = new IndexViewModel
             {
                 HasPassword = HasPassword(),
+                currentUser = UserManager.FindById(userId),
                 PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
                 TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
                 Logins = await UserManager.GetLoginsAsync(userId),
                 BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
             };
             return View(model);
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> Index(ApplicationUser model, HttpPostedFileBase image)
+        {
+            FileUploadValidator fileHelper = new FileUploadValidator();
+            var userId = User.Identity.GetUserId();
+            model = db.Users.AsNoTracking().FirstOrDefault(u => u.Id == userId);
+
+            if (fileHelper.IsWebpageFrendlyFile(image))
+            {
+                TempData["avatarCheck"] = "Success";
+                var fileName = Path.GetFileName(image.FileName);
+                image.SaveAs(Path.Combine(Server.MapPath("~/Avatar/"), fileName));
+                model.avatar = "/Avatar/" + fileName;
+            }
+            else
+            {
+                TempData["avatarCheck"] = "Failure";
+            }
+
+            db.Users.Attach(model);
+            db.Entry(model).State = EntityState.Modified;
+            db.SaveChanges();
+
+            var viewModel = new IndexViewModel
+            {
+                HasPassword = HasPassword(),
+                currentUser = UserManager.FindById(userId),
+                PhoneNumber = await UserManager.GetPhoneNumberAsync(userId),
+                TwoFactor = await UserManager.GetTwoFactorEnabledAsync(userId),
+                Logins = await UserManager.GetLoginsAsync(userId),
+                BrowserRemembered = await AuthenticationManager.TwoFactorBrowserRememberedAsync(userId)
+            };
+
+            return View(viewModel);
         }
 
         //

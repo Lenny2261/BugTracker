@@ -26,7 +26,7 @@
         <dt>Name:</dt>
         <dd>
             [
-                @Html.ActionLink("Change your name", "ChangeName")
+            @Html.ActionLink("Change your name", "ChangeName")
             ]
         </dd>
         <dt>External Logins:</dt>
@@ -88,6 +88,19 @@
                     </text>
                 }
             }*@
+        </dd>
+        <dt>Change Your Avatar: </dt>
+        <dd>
+            @using (Html.BeginForm("Index", "Manage", FormMethod.Post, new { enctype = "Multipart/form-data" }))
+            {
+
+                <input name="image" type="file" class="form-control" id="fileUpload" />
+                @Html.ValidationMessageFor(model => model.currentUser.avatar, "", new { @class = "text-danger" })
+
+                <div class="blog-content">
+                    <button class="btn btn-dafault btn-details" type="submit">Submit</button>
+                </div>
+            }
         </dd>
     </dl>
 </div>
