@@ -139,19 +139,26 @@ namespace BugTracker.Controllers
         }
 
         [HttpPost]
-        public ActionResult _UserNotifications(int Id, string notification, int TicketId, string UserId)
+        public ActionResult _UserNotifications(int TicketId)
         {
-            TicketNotifications notifications = new TicketNotifications();
+            //TicketNotifications notifications = new TicketNotifications();
 
-            notifications.seen = true;
-            notifications.Id = Id;
-            notifications.UserId = UserId;
-            notifications.TicketId = TicketId;
+            foreach(var item in db.ticketNotifications.Where(n => n.seen == false))
+            {
+                if(item.TicketId == TicketId)
+                {
+                    item.seen = true;
+                }
+            }
+            //notifications.seen = true;
+            //notifications.Id = Id;
+            //notifications.UserId = UserId;
+            //notifications.TicketId = TicketId;
 
 
-            db.Entry(notifications).State = EntityState.Modified;
+            //db.Entry(notifications).State = EntityState.Modified;
             db.SaveChanges();
-            return RedirectToAction("Details", "Tickets", new { id = notifications.TicketId });
+            return RedirectToAction("Details", "Tickets", new { id = TicketId});
         }
 
         protected override void Dispose(bool disposing)

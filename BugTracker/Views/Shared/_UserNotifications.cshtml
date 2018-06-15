@@ -37,9 +37,6 @@
                         {
                             <button class="btn-custom" type="submit">
                                 @Html.Hidden("TicketId", item.Ticket.Id)
-                                @Html.Hidden("Id", item.Id)
-                                @Html.Hidden("notification", item.notification)
-                                @Html.Hidden("UserId", item.UserId)
                                 <div class="dropdown-item-desc line-height">
                                     @item.notification
                                 </div>

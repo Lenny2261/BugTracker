@@ -27,6 +27,12 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Details(int? id)
         {
+            var userId = User.Identity.GetUserId();
+            if(db.tickets.Where(t => t.Id == id).Where(t => t.AssignedId == userId).FirstOrDefault() == null && User.IsInRole("Developer"))
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -47,15 +53,28 @@ namespace BugTracker.Controllers
         }
 
         // GET: Tickets/Create
-        [Authorize(Roles = "Submitter,Admin,ProjectManager,Developer")]
+        [Authorize(Roles = "Submitter,Admin")]
         public ActionResult Create()
         {
+            string UserId = User.Identity.GetUserId();
+
             ViewBag.AssignedId = new SelectList(db.Users, "Id", "firstName");
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "firstName");
-            ViewBag.ProjectID = new SelectList(db.projects, "Id", "name");
+            ViewBag.ProjectID = new SelectList(db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(UserId)), "Id", "name");
             ViewBag.TicketPriorityId = new SelectList(db.ticketPriorities, "Id", "name");
             ViewBag.TicketStatusId = new SelectList(db.ticketStatuses, "Id", "name");
             ViewBag.TicketTypeId = new SelectList(db.ticketTypes, "Id", "name");
+
+            if (db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(UserId)).FirstOrDefault() == null)
+            {
+                return RedirectToAction("ErrorMessage", "Tickets");
+            }
+
+            return View();
+        }
+
+        public ActionResult ErrorMessage()
+        {
             return View();
         }
 
@@ -63,7 +82,7 @@ namespace BugTracker.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [Authorize(Roles = "Submitter,Admin,ProjectManager,Developer")]
+        [Authorize(Roles = "Submitter,Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,title,description,created,updated,ProjectID,TicketTypeId,TicketStatusId,TicketPriorityId,AssignedId,OwnerId")] Tickets tickets)
         {
@@ -78,13 +97,20 @@ namespace BugTracker.Controllers
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
+            string UserId = User.Identity.GetUserId();
 
             ViewBag.AssignedId = new SelectList(db.Users, "Id", "firstName", tickets.AssignedId);
             ViewBag.OwnerId = new SelectList(db.Users, "Id", "firstName", tickets.OwnerId);
-            ViewBag.ProjectID = new SelectList(db.projects, "Id", "name", tickets.ProjectID);
+            ViewBag.ProjectID = new SelectList(db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(UserId)), "Id", "name", tickets.ProjectID);
             ViewBag.TicketPriorityId = new SelectList(db.ticketPriorities, "Id", "name", tickets.TicketPriorityId);
             ViewBag.TicketStatusId = new SelectList(db.ticketStatuses, "Id", "name", tickets.TicketStatusId);
             ViewBag.TicketTypeId = new SelectList(db.ticketTypes, "Id", "name", tickets.TicketTypeId);
+
+            if(db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(UserId)).FirstOrDefault() == null)
+            {
+                return RedirectToAction("ErrorMessage", "Tickets");
+            }
+
             return View(tickets);
         }
 
@@ -92,6 +118,13 @@ namespace BugTracker.Controllers
         [Authorize(Roles = "Admin,ProjectManager,Developer,Submitter")]
         public ActionResult Edit(int? id)
         {
+
+            var userId = User.Identity.GetUserId();
+            if (db.tickets.Where(t => t.Id == id).Where(t => t.AssignedId == userId).FirstOrDefault() == null && User.IsInRole("Developer"))
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);

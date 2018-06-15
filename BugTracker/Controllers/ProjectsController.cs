@@ -140,7 +140,7 @@ namespace BugTracker.Controllers
             }
             else if (User.IsInRole("ProjectManager"))
             {
-                model = roleHelp.UsersInRole("Developer").ToList();
+                model = roleHelp.MultipleUsersInRole("Developer", "Submitter").ToList();
             }
 
             
