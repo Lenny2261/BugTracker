@@ -37,6 +37,7 @@
                         <th>
                             Date Created
                         </th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -69,6 +70,10 @@
                             }
                             <td>
                                 @createdBlog[0] @createdBlog[1] @createdBlog[2]
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Edit", "Tickets" , new { id = item.Id })">Edit</a>
+                                <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a>
                             </td>
                         </tr>
                     }
@@ -105,6 +110,7 @@
                                 <th>
                                     Description
                                 </th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
@@ -131,6 +137,10 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Tickets" , new { id = item.Id })">Edit</a>
+                                        <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a>
                                     </td>
                                 </tr>
                             }
@@ -204,6 +214,9 @@
                                 <th>
                                     Description
                                 </th>
+                                <th>
+
+                                </th>
                             </tr>
                         </thead>
                         <tbody>
@@ -233,6 +246,10 @@
                                     </td>
                                     <td>
                                         @Html.DisplayFor(modelItem => item.description)
+                                    </td>
+                                    <td>
+                                        <a href="@Url.Action("Edit", "Tickets" , new { id = item.Id })">Edit</a>
+                                        <a href="@Url.Action("Details", "Tickets", new { id = item.Id })">Details</a>
                                     </td>
                                 </tr>
                             }

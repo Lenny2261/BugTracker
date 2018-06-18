@@ -33,6 +33,11 @@ namespace BugTracker.Controllers
                 return RedirectToAction("Index", "Profile");
             }
 
+            if (db.tickets.Where(t => t.Id == id).Where(t => t.OwnerId == userId).FirstOrDefault() == null && User.IsInRole("Submitter"))
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
@@ -121,6 +126,11 @@ namespace BugTracker.Controllers
 
             var userId = User.Identity.GetUserId();
             if (db.tickets.Where(t => t.Id == id).Where(t => t.AssignedId == userId).FirstOrDefault() == null && User.IsInRole("Developer"))
+            {
+                return RedirectToAction("Index", "Profile");
+            }
+
+            if (db.tickets.Where(t => t.Id == id).Where(t => t.OwnerId == userId).FirstOrDefault() == null && User.IsInRole("Submitter"))
             {
                 return RedirectToAction("Index", "Profile");
             }
