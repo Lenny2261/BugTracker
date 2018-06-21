@@ -30,11 +30,19 @@ namespace BugTracker.Controllers
             var userId = User.Identity.GetUserId();
             if(db.tickets.Where(t => t.Id == id).Where(t => t.AssignedId == userId).FirstOrDefault() == null && User.IsInRole("Developer"))
             {
+                TempData["Attempted"] = "Failure";
                 return RedirectToAction("Index", "Profile");
             }
 
             if (db.tickets.Where(t => t.Id == id).Where(t => t.OwnerId == userId).FirstOrDefault() == null && User.IsInRole("Submitter"))
             {
+                TempData["Attempted"] = "Failure";
+                return RedirectToAction("Index", "Profile");
+            }
+
+            if (db.tickets.Where(t => t.Id == id).Where(t => t.Project.projectUsers.Select(u => u.Id).Contains(userId)).FirstOrDefault() == null && User.IsInRole("ProjectManager"))
+            {
+                TempData["Attempted"] = "Failure";
                 return RedirectToAction("Index", "Profile");
             }
 
@@ -127,11 +135,19 @@ namespace BugTracker.Controllers
             var userId = User.Identity.GetUserId();
             if (db.tickets.Where(t => t.Id == id).Where(t => t.AssignedId == userId).FirstOrDefault() == null && User.IsInRole("Developer"))
             {
+                TempData["Attempted"] = "Failure";
                 return RedirectToAction("Index", "Profile");
             }
 
             if (db.tickets.Where(t => t.Id == id).Where(t => t.OwnerId == userId).FirstOrDefault() == null && User.IsInRole("Submitter"))
             {
+                TempData["Attempted"] = "Failure";
+                return RedirectToAction("Index", "Profile");
+            }
+
+            if(db.tickets.Where(t => t.Id == id).Where(t => t.Project.projectUsers.Select(u => u.Id).Contains(userId)).FirstOrDefault() == null && User.IsInRole("ProjectManager"))
+            {
+                TempData["Attempted"] = "Failure";
                 return RedirectToAction("Index", "Profile");
             }
 

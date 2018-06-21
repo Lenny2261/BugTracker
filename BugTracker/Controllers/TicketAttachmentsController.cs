@@ -150,7 +150,7 @@ namespace BugTracker.Controllers
         }
 
         // GET: TicketAttachments/Delete/5
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         public ActionResult Delete(int? id)
         {
             if (id == null)
@@ -166,7 +166,7 @@ namespace BugTracker.Controllers
         }
 
         // POST: TicketAttachments/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost, ActionName("Delete, ProjectManager")]
         [Authorize(Roles = "Admin")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)

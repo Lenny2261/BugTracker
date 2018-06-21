@@ -145,7 +145,7 @@ namespace BugTracker.Controllers
 
             foreach(var item in db.ticketNotifications.Where(n => n.seen == false))
             {
-                if(item.TicketId == TicketId)
+                if(item.TicketId == TicketId && item.UserId == User.Identity.GetUserId())
                 {
                     item.seen = true;
                 }

@@ -297,4 +297,15 @@
     <script>
         $('.table').DataTable();
     </script>
+
+    <script>
+        var check = '@TempData["Attempted"]';
+        if (check == "Failure") {
+            swal({
+                type: 'error',
+                title: 'Oops...',
+                text: "You cannot edit or see the tickets you do not belong to!",
+            })
+        }
+    </script>
 }
