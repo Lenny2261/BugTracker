@@ -166,15 +166,15 @@ namespace BugTracker.Controllers
         }
 
         // POST: TicketAttachments/Delete/5
-        [HttpPost, ActionName("Delete, ProjectManager")]
-        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("Delete")]
+        [Authorize(Roles = "Admin, ProjectManager")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
             TicketAttachments ticketAttachments = db.ticketAttachments.Find(id);
             db.ticketAttachments.Remove(ticketAttachments);
             db.SaveChanges();
-            return RedirectToAction("Index");
+            return RedirectToAction("Details", "Tickets", new { id = ticketAttachments.TicketId });
         }
 
         protected override void Dispose(bool disposing)

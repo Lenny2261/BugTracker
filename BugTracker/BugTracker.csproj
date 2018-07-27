@@ -245,6 +245,7 @@
     <Content Include="Avatar\csharp.png" />
     <Content Include="Avatar\default-avatar.png" />
     <Content Include="Avatar\destiny-Wallpaper-Widescreen-number-Q0y %282%29.jpg" />
+    <Content Include="Avatar\javascript.png" />
     <Content Include="Avatar\masterrace.png" />
     <Content Include="Avatar\Port.jpg" />
     <Content Include="Content\bootstrap-grid.css" />
@@ -3533,6 +3534,7 @@
     <Content Include="dist\modules\toastr\LICENSE" />
     <Content Include="dist\modules\toastr\toastr.less" />
     <Content Include="dist\modules\toastr\toastr.scss" />
+    <Content Include="JSON\test.txt" />
     <Content Include="Scripts\bootstrap.bundle.js" />
     <Content Include="Scripts\bootstrap.bundle.min.js" />
     <Content Include="Scripts\bootstrap.js" />

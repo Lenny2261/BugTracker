@@ -8,6 +8,7 @@
         <br />
         @if (User.IsInRole("Submitter"))
         {
+        <div class="row">
             <h3>Tickets You Made</h3>
             <br />
             <table class="table">
@@ -79,6 +80,7 @@
                     }
                 </tbody>
             </table>
+        </div>
         }
         else if (User.IsInRole("Developer"))
         {
@@ -288,6 +290,16 @@
                         </tbody>
                     </table>
                 </div>
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <h4>Ticket Statuses</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="myChart4"></canvas>
+                        </div>
+                    </div>
+                </div>
             </div>
         }
     </section>
@@ -308,4 +320,39 @@
             })
         }
     </script>
+        <script>
+        var ctx = document.getElementById("myChart4").getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                datasets: [{
+                    data: [
+                        @TempData["Finished"],
+                        @TempData["InProgress"],
+                        @TempData["OnHold"],
+                        @TempData["NotStart"],
+                    ],
+                    backgroundColor: [
+                        '#574B90',
+                        '#28a745',
+                        '#ffc107',
+                        '#dc3545',
+                    ],
+                    label: 'Dataset 1'
+                }],
+                labels: [
+                    'Finished',
+                    'In Progress',
+                    'On Hold',
+                    'Not Started'
+                ],
+            },
+            options: {
+                responsive: true,
+                legend: {
+                    position: 'bottom',
+                },
+            }
+        });
+        </script>
 }

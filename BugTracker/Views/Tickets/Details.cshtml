@@ -167,7 +167,11 @@
                     <a href="@item.fileURL" download="@item.filePath">Download</a>
                 </div>
                 <div>
-                    @item.description @Html.ActionLink("Delete", "Delete", new { id = item.TicketId })
+                    @item.description
+                    @if (User.IsInRole("ProjectManager"))
+                    {
+                        <a href="@Url.Action("Delete", "TicketAttachments", new { id = item.Id})">Delete</a>
+                    }
                 </div>
                 <br />
             }

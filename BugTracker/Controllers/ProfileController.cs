@@ -55,14 +55,41 @@ namespace BugTracker.Controllers
                 projects = db.projects.Where(p => p.projectUsers.Select(u => u.Id).Contains(userId)).ToList(),
                 tickets = db.tickets.Where(t => t.Project.projectUsers.Select(p => p.Id).Contains(userId)).ToList()
             };
+
+            int not = 0, on = 0, fin = 0, inPro = 0;
+
+            foreach (var ticket in model.tickets)
+            {
+                var status = ticket.TicketStatus.name;
+
+                switch (status)
+                {
+                    case ("Not Started"):
+                        not++;
+                        break;
+                    case ("On Hold"):
+                        on++;
+                        break;
+                    case ("Finished"):
+                        fin++;
+                        break;
+                    case ("In Progress"):
+                        inPro++;
+                        break;
+                }
+            }
+
+            TempData["NotStart"] = not;
+            TempData["Finished"] = fin;
+            TempData["OnHold"] = on;
+            TempData["InProgress"] = inPro;
+
             return View(model);
         }
 
-        
+
         public ActionResult AdminDashboard()
         {
-
-
             var userId = User.Identity.GetUserId();
 
             var model = new DashboardViewModel
@@ -71,6 +98,34 @@ namespace BugTracker.Controllers
                 projects = db.projects.ToList(),
                 tickets = db.tickets.ToList()
             };
+
+            int not = 0, on = 0, fin = 0, inPro = 0;
+
+            foreach (var ticket in model.tickets)
+            {
+                var status = ticket.TicketStatus.name;
+
+                switch (status)
+                {
+                    case ("Not Started"):
+                        not++;
+                        break;
+                    case ("On Hold"):
+                        on++;
+                        break;
+                    case ("Finished"):
+                        fin++;
+                        break;
+                    case ("In Progress"):
+                        inPro++;
+                        break;
+                }
+            }
+
+            TempData["NotStart"] = not;
+            TempData["Finished"] = fin;
+            TempData["OnHold"] = on;
+            TempData["InProgress"] = inPro;
 
             return View(model);
         }
